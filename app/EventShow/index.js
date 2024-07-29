@@ -1,7 +1,7 @@
 import { s } from "./styles.js";
 import { useContext, useEffect, useState } from "react";
 import api from "../../config/config.js";
-import { AuthContext } from "../../context/AuthContext.js";
+import { AuthContext } from "../context/AuthContext.js";
 import { TxtInria, TxtInriaBold, TxtInriaItalic } from "../../components/TxtInria/TxtInria.jsx";
 import { Image, ScrollView, TextInput, TouchableOpacity, View, Linking } from "react-native";
 import { showMessage } from "react-native-flash-message";

@@ -1,5 +1,5 @@
 import { SvgXml } from 'react-native-svg';
-import { AuthContext } from '../../context/AuthContext';
+import { AuthContext } from '../../app/context/AuthContext';
 import { useContext } from 'react';
 
 

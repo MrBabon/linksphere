@@ -1,6 +1,6 @@
 import { s } from "./styles";
 import Spinner from "react-native-loading-spinner-overlay";
-import api, { AuthContext } from "../../context/AuthContext";
+import api, { AuthContext } from "../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import { TxtJost } from "../../components/TxtJost/TxtJost";
 import { TxtInria, TxtInriaBold, TxtInriaLight } from "../../components/TxtInria/TxtInria";
@@ -14,6 +14,7 @@ import Twitter from "../../assets/icons/Twitter";
 import Instagram from "../../assets/icons/Instagram";
 import Linkedin from "../../assets/icons/Linkedin";
 import Facebook from "../../assets/icons/Facebook";
+import { Link } from "expo-router";
 
 
 const Profil = ({ navigation }) => {
@@ -22,9 +23,11 @@ const Profil = ({ navigation }) => {
 
 
     const settingButton = (
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-            <Settings/>
-        </TouchableOpacity>
+        <Link href={"/Settings"} asChild>
+            <TouchableOpacity>
+                <Settings/>
+            </TouchableOpacity>
+        </Link>
     );
 
     const header = (

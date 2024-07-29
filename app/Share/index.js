@@ -1,7 +1,7 @@
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import Header from "../../components/Header/Header";
 import { useCallback, useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import api from "../../config/config";
 import { useFocusEffect } from "@react-navigation/native";
 import { TxtInria, TxtInriaBold, TxtInriaLight } from "../../components/TxtInria/TxtInria";

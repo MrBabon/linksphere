@@ -4,7 +4,7 @@ import { TxtInria } from "../../components/TxtInria/TxtInria"
 import Spinner from "react-native-loading-spinner-overlay";
 import { UserSearch } from "../../components/forms/UserSearch/UserSearch";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import api from "../../config/config";
 import Avatar from "../../assets/icons/Avatar";
 import { showMessage } from "react-native-flash-message";

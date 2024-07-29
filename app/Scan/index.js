@@ -4,7 +4,7 @@ import { TxtInria } from "../../components/TxtInria/TxtInria";
 import { TxtJost } from "../../components/TxtJost/TxtJost";
 import Spinner from "react-native-loading-spinner-overlay";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import api from "../../config/config";
 import QRCode from 'react-native-qrcode-svg';
 import { CameraView, useCameraPermissions } from "expo-camera";
@@ -88,7 +88,7 @@ const ScanScreen = ({ navigation }) => {
     if (!permission.granted) {
         // Les permissions de la caméra ne sont pas encore accordées.
         return (
-            <View style={styles.container}>
+            <View style={s.container}>
             <TxtInria style={{ textAlign: 'center' }}>We need your permission to show the camera</TxtInria>
             <Button onPress={requestPermission} title="Grant permission" />
             </View>

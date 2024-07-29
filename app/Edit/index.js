@@ -7,12 +7,13 @@ import ChevronLeft from "../../assets/icons/ChevronLeft";
 import { TxtJost } from "../../components/TxtJost/TxtJost";
 import { useContext, useState } from "react";
 import {Picker} from '@react-native-picker/picker';
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import Avatar from "../../assets/icons/Avatar";
 import { showMessage } from "react-native-flash-message";
+import { useRouter } from "expo-router";
 
 
-const EditScreen = ({ navigation }) => {
+const EditScreen = () => {
     const {updateProfil, userInfo} = useContext(AuthContext);
     const [firstName, setFirstName] = useState(userInfo.first_name || '');
     const [lastName, setLastName] = useState(userInfo.last_name || '');
@@ -31,16 +32,17 @@ const EditScreen = ({ navigation }) => {
     const [previewUri, setPreviewUri] = useState(null);
     const [currentPassword, setCurrentPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState(null);
+    const router = useRouter();
 
 
     
     const settingButton = (
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+        <TouchableOpacity onPress={() => router.navigate('Settings')}>
             <Settings/>
         </TouchableOpacity>
     );
     const BackButton = (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => router.back()}>
             <ChevronLeft/>
         </TouchableOpacity>
     );
@@ -65,7 +67,7 @@ const EditScreen = ({ navigation }) => {
             return;
         } 
         updateProfil(firstName, lastName, phone, email, job, biography, website, linkedin, instagram, facebook, twitter, currentPassword, avatar)
-        navigation.navigate('Profil')
+        router.navigate('Profil')
     }
     
     async function pickImageAsync(){

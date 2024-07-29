@@ -1,7 +1,7 @@
 import { s } from "./styles";
 import { useContext, useEffect, useState } from "react";
 import { TxtInria, TxtInriaBold, TxtInriaLight } from "../../components/TxtInria/TxtInria";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import api from "../../config/config";
 import Spinner from "react-native-loading-spinner-overlay";
 import { ScrollView, TouchableOpacity, View } from "react-native";

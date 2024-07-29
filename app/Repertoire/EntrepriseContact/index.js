@@ -1,6 +1,6 @@
 import { s } from "./styles";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Header from "../../../components/Header/Header";
 import { TxtJost, TxtJostBold } from "../../../components/TxtJost/TxtJost";

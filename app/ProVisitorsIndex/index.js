@@ -1,6 +1,6 @@
 import { TouchableOpacity, View, ScrollView } from "react-native";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext.js";
+import { AuthContext } from "../context/AuthContext.js";
 import api from "../../config/config.js";
 import { TxtInria } from "../../components/TxtInria/TxtInria.jsx";
 import { s } from "./styles.js";

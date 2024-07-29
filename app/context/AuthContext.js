@@ -1,7 +1,8 @@
 import { createContext, useCallback, useEffect, useState } from "react";
-import api, { setAuthInterceptor } from '../config/config';
+import api, { setAuthInterceptor } from '../../config/config';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { showMessage } from "react-native-flash-message";
+import { useRouter } from "expo-router";
 
 export const AuthContext = createContext();
 
@@ -13,11 +14,11 @@ export const AuthProvider = ({ children }) => {
     const [splashLoading, setSplashLoading] = useState(false);
     const [groupId, setGroupId] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
+    const router = useRouter();
     
     const fetchContactGroup = useCallback(async () => {
         if (userInfo && userToken) {
             try {
-                console.log('FetchContactGroup:', 'userInfo:', userInfo, 'userToken:', userToken);
                 const response = await api.get(`/users/${userInfo.id}/repertoire`, {
                     headers: { Authorization: userToken }
                 });
@@ -43,7 +44,6 @@ export const AuthProvider = ({ children }) => {
             let userToken = await AsyncStorage.getItem('userToken');
             let groupId = await AsyncStorage.getItem('groupId');
             userInfo = JSON.parse(userInfo);
-            console.log('IsLoggedIn:', 'userInfo:', userInfo, 'userToken:', userToken, 'groupId:', groupId);
             if(userInfo) {
                 setUserInfo(userInfo)
                 setUserToken(userToken)
@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }) => {
                 type: "success",
                 duration: 4000
             });
-
+            router.replace('/Profil');
         }).catch(e => {
             console.log(`register error ${e}`);
             setIsLoading(false);
@@ -124,7 +124,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         setIsLoading(true);
-
+        console.log("Attempting login...");
         try {
             const response = await api.post('/login', {
               user: {
@@ -136,6 +136,7 @@ export const AuthProvider = ({ children }) => {
                 'Content-Type': 'application/json'
               }
             });
+            console.log("Login response:", response); // Debug log
             let userInfo = response.data.data;
             let token = response.headers['authorization'];
             setUserInfo(userInfo);
@@ -149,7 +150,7 @@ export const AuthProvider = ({ children }) => {
               type: "success",
               duration: 4000
             });
-        
+            router.replace('/Profil');
         } catch(e) {
             if (e.isLoginError) {
                 if (process.env.NODE_ENV === 'development') {
@@ -177,7 +178,7 @@ export const AuthProvider = ({ children }) => {
         };
     }
 
-    const logout = async (navigation) => {
+    const logout = async () => {
         setIsLoading(true);
         try {
             await api.delete('/logout', {
@@ -193,8 +194,9 @@ export const AuthProvider = ({ children }) => {
             showMessage({
               message: "Logout Successful",
               type: "success",
-              duration: 4000
+              duration: 3000
             });
+            router.replace('/Home');
         } catch (e) {
             console.error(`Logout error:`, e);
             setIsLoading(false);
@@ -202,7 +204,7 @@ export const AuthProvider = ({ children }) => {
               message: "Logout Error",
               description: "There was a problem logging out. Please try again.",
               type: "danger",
-              duration: 4000
+              duration: 3000
             });
         }
     }

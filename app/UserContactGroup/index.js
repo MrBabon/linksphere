@@ -6,7 +6,7 @@ import { TxtJost } from "../../components/TxtJost/TxtJost";
 import Spinner from "react-native-loading-spinner-overlay";
 import Header from "../../components/Header/Header";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import api from "../../config/config";
 import Avatar from "../../assets/icons/Avatar";
 import Phone from "../../assets/icons/Phone";

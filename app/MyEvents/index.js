@@ -4,7 +4,7 @@ import { ScrollView, TouchableOpacity, TouchableWithoutFeedback, View, Image } f
 import { TxtInria } from "../../components/TxtInria/TxtInria";
 import { TxtJost, TxtJostBold, TxtJostSemiBold } from "../../components/TxtJost/TxtJost";
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import api from "../../config/config";
 import { format, parseISO } from "date-fns";

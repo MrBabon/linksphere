@@ -1,5 +1,5 @@
 import { ActivityIndicator, View } from "react-native";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext, AuthProvider } from "./context/AuthContext";
 import { Stack, useRouter } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import { useFonts } from "expo-font";
@@ -10,6 +10,7 @@ import  InriaBold from "../assets/fonts/Inria/InriaSans-Bold.ttf";
 import  Jost from "../assets/fonts/Jost/Jost-Regular.ttf";
 import  JostSemiBold from "../assets/fonts/Jost/Jost-SemiBold.ttf";
 import  JostBold from "../assets/fonts/Jost/Jost-Bold.ttf";
+import Footer from "../components/Footer/Footer";
 
 
 function LoadingScreen() {
@@ -70,8 +71,8 @@ export default function Index() {
           <Stack.Screen name="Home" />
           <Stack.Screen name="Login" />
           <Stack.Screen name="Register" />
-          <Stack.Screen name="Profil" />
-          <Stack.Screen name="Settings" />
+          {/* <Stack.Screen name="Profil" /> */}
+          {/* <Stack.Screen name="Settings" /> */}
         </Stack>
     </>
   );

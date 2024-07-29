@@ -2,7 +2,7 @@ import { TextInput, TouchableOpacity, View } from "react-native";
 import { s } from "./styles";
 import { useContext, useState } from "react";
 import Spinner from 'react-native-loading-spinner-overlay';
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import { Container } from "../../components/Container/Container";
 import ChevronLeft from "../../assets/icons/ChevronLeft";
 import { TxtInria, TxtInriaBold } from "../../components/TxtInria/TxtInria";
@@ -11,10 +11,10 @@ import { Link, useRouter } from "expo-router";
 
 
 
-const LoginScreen = () => {
+const Login = () => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
-    const {isLoading, login} = useContext(AuthContext);
+    const { login, isLoading } = useContext(AuthContext);
     const router = useRouter();
 
     const backButton = (
@@ -74,4 +74,4 @@ const LoginScreen = () => {
     )
 }
 
-export default LoginScreen;
+export default Login;

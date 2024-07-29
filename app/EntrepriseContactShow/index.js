@@ -1,7 +1,7 @@
 import { s } from "./styles";
 import { useContext, useEffect, useState } from "react";
 import api from "../../config/config";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import Header from "../../components/Header/Header";
 import { Image, ScrollView, TextInput, TouchableOpacity, View } from "react-native";

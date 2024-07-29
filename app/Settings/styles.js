@@ -99,7 +99,7 @@ export const s = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        backgroundColor: "#FFD115",
+        backgroundColor: "#FBD160",
         paddingVertical: 7,
         paddingHorizontal: 24,
         borderRadius: 50,

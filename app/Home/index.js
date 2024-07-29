@@ -6,8 +6,7 @@ import { View, ImageBackground, TouchableOpacity} from "react-native";
 import { Link } from 'expo-router';
 
 
-const Home = () => {
-
+export default function Home() {
   return (
     <>
       <ImageBackground source={backgroundImg} style={s.background_img} imageStyle={s.img}>
@@ -35,5 +34,3 @@ const Home = () => {
     </>
   )
 }
-
-export default Home;

@@ -5,7 +5,7 @@ import ChevronLeft from "../../assets/icons/ChevronLeft";
 import { TxtJost, TxtJostBold, TxtJostSemiBold } from "../../components/TxtJost/TxtJost";
 import Spinner from "react-native-loading-spinner-overlay";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import api from "../../config/config";
 import { Image } from "react-native";
 import Instagram from "../../assets/icons/Instagram";

@@ -4,7 +4,7 @@ import { TxtInria } from "../../components/TxtInria/TxtInria";
 import { TxtJost, TxtJostBold } from "../../components/TxtJost/TxtJost";
 import Spinner from "react-native-loading-spinner-overlay";
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import api from "../../config/config";
 import { format, parseISO } from 'date-fns';
 import CalendarEvent from "../../assets/icons/CalendarEvent";

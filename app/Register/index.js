@@ -2,7 +2,7 @@ import { s } from "./styles";
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useContext, useState } from "react";
 import Spinner from 'react-native-loading-spinner-overlay';
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import { showMessage } from "react-native-flash-message";
 import ChevronLeft from "../../assets/icons/ChevronLeft";
 import { TxtJost, TxtJostSemiBold } from "../../components/TxtJost/TxtJost";

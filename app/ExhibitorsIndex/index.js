@@ -4,7 +4,7 @@ import { s } from "./styles";
 import ChevronLeft from "../../assets/icons/ChevronLeft";
 import { TxtJost, TxtJostBold } from "../../components/TxtJost/TxtJost";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import api from "../../config/config";
 import Spinner from "react-native-loading-spinner-overlay";
 import { ModalVisiblePro } from "../../components/Modal/ModalVisiblePro/ModalVisiblePro";

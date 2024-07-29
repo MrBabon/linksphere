@@ -1,8 +1,8 @@
-import { useContext, useState } from "react"
-import { Button, Keyboard, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
-import { AuthContext } from "../../../context/AuthContext";
+import { useState } from "react"
+import {  TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+
 import { s } from "./EventSearch.style";
-import { TxtInria, TxtInriaBold } from "../../TxtInria/TxtInria";
+import { TxtInriaBold } from "../../TxtInria/TxtInria";
 import Filter from "../../../assets/icons/Filter"
 import Search from "../../../assets/icons/Search";
 import * as Animatable from 'react-native-animatable';

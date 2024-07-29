@@ -1,6 +1,6 @@
 import { s } from "./styles";
 import Spinner from "react-native-loading-spinner-overlay";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import { useContext, useState } from "react";
 import Settings from '../../assets/icons/Settings';
 import ChevronLeft from "../../assets/icons/ChevronLeft";
@@ -9,13 +9,15 @@ import { ScrollView, Switch, TouchableOpacity, View } from "react-native";
 import { TxtInria, TxtInriaBold } from "../../components/TxtInria/TxtInria";
 import { TxtJost } from "../../components/TxtJost/TxtJost";
 import DoorExit from "../../assets/icons/Doorexit";
+import { useRouter } from "expo-router";
 
 
-const SettingsScreen = ({ navigation }) => {
+const SettingsScreen = () => {
     const {userInfo, logout, isLoading, updatePreferences} = useContext(AuthContext);
     const [pushNotifications, setPushNotifications] = useState(userInfo.push_notifications);
     const [messagesFromContacts, setMessagesFromContacts] = useState(userInfo.messages_from_contacts);
     const [messagesFromEveryone, setMessagesFromEveryone] = useState(userInfo.messages_from_everyone);
+    const router = useRouter();
 
     const handleUpdatePreferences = (preference, value) => {
         const updatedPreferences = {
@@ -38,12 +40,12 @@ const SettingsScreen = ({ navigation }) => {
     
 
     const settingButton = (
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+        <TouchableOpacity>
             <Settings/>
         </TouchableOpacity>
     );
     const BackButton = (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => router.back()}>
             <ChevronLeft/>
         </TouchableOpacity>
     );
@@ -71,7 +73,7 @@ const SettingsScreen = ({ navigation }) => {
                         <View style={s.lign}></View>
                         <View style={s.section_card}>
                             <TxtInria style={s.title}>Account Settings</TxtInria>
-                            <TouchableOpacity style={s.btn} onPress={() => navigation.navigate('Edit')}>
+                            <TouchableOpacity style={s.btn} onPress={() => router.navigate('Edit')}>
                                 <TxtInriaBold style={s.txt}>Edit Profile</TxtInriaBold>
                                 <ChevronRight />
                             </TouchableOpacity>
@@ -157,7 +159,7 @@ const SettingsScreen = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={s.container_log_out}>
-                            <TouchableOpacity style={s.btn_log_out} onPress={() => logout(navigation)}>
+                            <TouchableOpacity style={s.btn_log_out} onPress={() => logout()}>
                                 <DoorExit />
                                 <TxtInriaBold style={s.txt_log_out}>LOG OUT</TxtInriaBold>
                             </TouchableOpacity>

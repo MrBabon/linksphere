@@ -5,7 +5,7 @@ import PlusCircle from "../../assets/icons/PlusCircle";
 import Spinner from "react-native-loading-spinner-overlay";
 import { TxtJost, TxtJostBold } from "../../components/TxtJost/TxtJost";
 import { useCallback, useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import api from "../../config/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserSearch } from "../../components/forms/UserSearch/UserSearch";
