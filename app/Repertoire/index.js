@@ -13,12 +13,14 @@ import Avatar from "../../assets/icons/Avatar";
 import { showMessage } from "react-native-flash-message";
 import { ModalContactGroup } from "../../components/Modal/ModalContactGroup/ModalContactGroup";
 import { useFocusEffect } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 
-const RepertoireScreen = ({ navigation }) => {
+const RepertoireScreen = () => {
     const {userInfo, userToken, isLoading} = useContext(AuthContext);
     const [contactGroups, setContactGroups] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [users, setUsers] = useState([]);
+    const router = useRouter();
 
     const onUserSearch = (userName) => {
         if (userName) {
@@ -106,7 +108,7 @@ const RepertoireScreen = ({ navigation }) => {
                         <TxtJostBold style={s.nav_txt_active}>My Cards</TxtJostBold>
                         <View style={s.underline}></View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('EntrepriseContact')}>
+                    <TouchableOpacity onPress={() => router.navigate('Repertoire/EntrepriseContact')}>
                         <TxtJost style={s.nav_txt}>Entreprises</TxtJost>
                     </TouchableOpacity>
                 </View>
@@ -174,7 +176,7 @@ const RepertoireScreen = ({ navigation }) => {
                 <View style={s.container}>
                     {users.length > 0 ? (
                         users.map(user => (
-                            <TouchableOpacity key={`user-${user.id}`}  onPress={() => navigation.navigate("UserContactGroup", {userId: user.id})}>
+                            <TouchableOpacity key={`user-${user.id}`}  onPress={() => router.push({pathname: "UserContactGroup", params: {userId: user.id}})}>
                                 <View style={s.contactGroup}>
                                     <TxtInria>{user.first_name} {user.last_name}</TxtInria>
                                     <Avatar uri={user.avatar_url} style={s.avatar_url} svgStyle={s.avatar_url} />
@@ -184,7 +186,7 @@ const RepertoireScreen = ({ navigation }) => {
                         ))
                     ) : (
                         contactGroups.map(group => (
-                            <TouchableOpacity key={`group-${group.id}`} onPress={() => navigation.navigate("ContactGroup", { groupId: group.id })}>
+                            <TouchableOpacity key={`group-${group.id}`} onPress={() => router.push({pathname: "ContactGroups", params: { groupId: group.id }})}>
                                 <View style={s.contactGroup}>
                                     <TxtInria>{group.name}</TxtInria>
                                     <TxtInria style={s.count}>{group.userCount}</TxtInria>

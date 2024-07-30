@@ -49,7 +49,7 @@ const ExhibitorsScreen = () => {
                     </TouchableOpacity>
 
                 ) : (
-                    <TouchableOpacity onPress={() => router.navigate('ProVisitors', { eventId: id })}>
+                    <TouchableOpacity onPress={() => router.push({pathname: 'ProVisitorsIndex', params: { id: id }})}>
                         <TxtJost>Professional Visitors</TxtJost>
                     </TouchableOpacity>
                 )}
@@ -154,7 +154,7 @@ const ExhibitorsScreen = () => {
             <ScrollView>
                 {exhibitors.map(exhibitor => (
                         <View key={exhibitor.id}>
-                            <TouchableOpacity style={s.card} onPress={() => router.navigate('Exhibitor', { eventId: id, exhibitorId: exhibitor.id })}>
+                            <TouchableOpacity style={s.card} onPress={() => router.push({pathname: 'ExhibitorShow', params: { eventId: id, exhibitorId: exhibitor.id }})}>
                                 <View style={s.cardImg}>
                                     <Image source={{ uri: exhibitor.logo_url }} style={s.logo} onError={(e) => console.log('Error loading image:', e.nativeEvent.error)} />
                                 </View>

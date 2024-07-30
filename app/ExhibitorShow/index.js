@@ -18,21 +18,23 @@ import { ModalVisiblePro } from "../../components/Modal/ModalVisiblePro/ModalVis
 import Danger from "../../assets/icons/Danger";
 import Checkbox from "expo-checkbox";
 import { showMessage } from "react-native-flash-message";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-const ExhibitorShowScreen = ({ route, navigation }) => {
-    const { eventId, exhibitorId } = route.params;
+const ExhibitorShowScreen = () => {
+    const { eventId, exhibitorId} = useLocalSearchParams();
     const { userInfo, userToken } = useContext(AuthContext);
     
     const [entreprise, setEntreprise] = useState({})
     const [isChecked, setIsChecked] = useState(false);
     const [participationId, setParticipationId] = useState(null);
     const [modalVisiblePro, setModalVisiblePro] = useState(false);
+    const router = useRouter();
 
 
 
     // Header
     const backButton = (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => router.back()}>
             <ChevronLeft />
         </TouchableOpacity>
     );
@@ -55,7 +57,7 @@ const ExhibitorShowScreen = ({ route, navigation }) => {
                     </TouchableOpacity>
 
                 ) : (
-                    <TouchableOpacity onPress={() => navigation.navigate('ProVisitors', { eventId: eventId })}>
+                    <TouchableOpacity onPress={() => router.push({pathname: 'ProVisitors', params: { eventId: eventId }})}>
                         <TxtJost>Professional Visitors</TxtJost>
                     </TouchableOpacity>
                 )}
@@ -167,14 +169,14 @@ const ExhibitorShowScreen = ({ route, navigation }) => {
                 <View style={s.container}>
                     <TxtJostBold style={s.name}>{entreprise.name}</TxtJostBold>
                     <TxtInria style={s.description}>{entreprise.description}</TxtInria>
-                    <TouchableOpacity style={s.linkShow} onPress={() => navigation.navigate('Entreprise', {entrepriseId: entreprise.id})}>
+                    <TouchableOpacity style={s.linkShow} onPress={() => router.push({pathname: 'Entreprises', params: {id: entreprise.id}})}>
                         <ChevronRight color="#F9447F"/>
                         <TxtJostSemiBold style={s.linkTxt}>View business page</TxtJostSemiBold>
                     </TouchableOpacity>
                 </View>
                 <View style={s.containerRepresentative}>
                     <TxtInriaBold style={s.titleRepresentatives}>Representatives</TxtInriaBold>
-                    <TxtInria>ICI METTRE PHOTO EMPLOYEE + ENTREPRENEURS</TxtInria>
+                    {/* <TxtInria>ICI METTRE PHOTO EMPLOYEE + ENTREPRENEURS</TxtInria> */}
                 </View>
             </ScrollView>
             <ModalVisiblePro isVisible={modalVisiblePro} onClose={() => setModalVisiblePro(false)}>

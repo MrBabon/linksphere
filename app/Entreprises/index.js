@@ -7,15 +7,17 @@ import { ScrollView, TouchableOpacity, View, Image } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import { TxtJostBold } from "../../components/TxtJost/TxtJost";
 import Header from "../../components/Header/Header";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-const Entreprise = ({ route, navigation }) => {
-    const { entrepriseId } = route.params;
+const Entreprise = () => {
+    const { id } = useLocalSearchParams();
+    const router = useRouter();
     const { userInfo, userToken } = useContext(AuthContext);
     const [entreprise, setEntreprise] = useState({})
 
     const addEntreprise = async() => {
         try {
-            const response = await api.post(`/entreprises/${entrepriseId}/add_to_repertoire`, {}, {
+            const response = await api.post(`/entreprises/${id}/add_to_repertoire`, {}, {
                 headers: { Authorization: userToken }
             });
             const data = response.data.data;
@@ -29,7 +31,7 @@ const Entreprise = ({ route, navigation }) => {
         const fetchData = async () => {
             try {
                 if (userInfo && userToken) {
-                    const response = await api.get(`/entreprises/${entrepriseId}`, {
+                    const response = await api.get(`/entreprises/${id}`, {
                         headers: { Authorization: userToken }
                     });
                     const data = response.data.data
@@ -41,14 +43,14 @@ const Entreprise = ({ route, navigation }) => {
             }
         }
         fetchData();
-    }, [entrepriseId, userToken])
+    }, [id, userToken])
     return (
         <>
             <Spinner/>
             <Header
                 title="Entreprise"
                 showBackButton={true}
-                onBackPress={() => navigation.goBack()}
+                onBackPress={() => router.back()}
                 showAddEntreprise={true}
                 onAddEntreprisePress={() => addEntreprise()}>
                 <View style={s.viewBanner}>

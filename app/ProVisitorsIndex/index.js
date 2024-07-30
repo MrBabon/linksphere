@@ -8,14 +8,17 @@ import ChevronLeft from "../../assets/icons/ChevronLeft.js";
 import { TxtJost, TxtJostBold } from "../../components/TxtJost/TxtJost.jsx";
 import Spinner from "react-native-loading-spinner-overlay";
 import Avatar from "../../assets/icons/Avatar.js"
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-const ProVisitorsScreen = ({ route, navigation }) => {
-    const { eventId } = route.params;
+const ProVisitorsScreen = () => {
+    const { id } = useLocalSearchParams();
     const { userInfo, userToken } = useContext(AuthContext);
     const [users, setUsers] = useState([]);
+    const router = useRouter();
+
       // Header
       const backButton = (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => router.back()}>
             <ChevronLeft />
         </TouchableOpacity>
     );
@@ -28,10 +31,10 @@ const ProVisitorsScreen = ({ route, navigation }) => {
                 </View>
             </View>
             <View style={s.header_nav}>
-                <TouchableOpacity onPress={() => navigation.navigate('Exhibitors', { eventId: eventId })}>
+                <TouchableOpacity onPress={() => router.push({pathname: `/ExhibitorsIndex`, params: { id: id}})}>
                     <TxtJost>Exhibitors</TxtJost>
                 </TouchableOpacity>
-                <TouchableOpacity style={s.navContainer} onPress={() => navigation.navigate('ProVisitors', { eventId: eventId })}>
+                <TouchableOpacity style={s.navContainer} onPress={() => router.push({pathname: `/ProVisitorsIndex`, params: { id: id}})}>
                     <TxtJostBold style={s.nav_txt_active}>Professional Visitors</TxtJostBold>
                     <View style={s.underline}></View>
                 </TouchableOpacity>
@@ -46,7 +49,7 @@ const ProVisitorsScreen = ({ route, navigation }) => {
         const fetchData = async () => {
             try {
                 if (userInfo && userToken) {
-                    const response = await api.get(`/events/${eventId}/visitor`, {
+                    const response = await api.get(`/events/${id}/visitor`, {
                         headers: { Authorization: userToken }
                     });
 
@@ -71,7 +74,7 @@ const ProVisitorsScreen = ({ route, navigation }) => {
             }
         }
         fetchData();
-    }, [eventId, userToken]);
+    }, [id, userToken]);
     return (
         <>
             <Spinner/>
@@ -79,7 +82,7 @@ const ProVisitorsScreen = ({ route, navigation }) => {
             <ScrollView>
                 {users.map(user => (
                     <View key={user.id}>
-                        <TouchableOpacity style={s.card} onPress={() => navigation.navigate('ProVisitor', { userId: user.userId })}>
+                        <TouchableOpacity style={s.card} onPress={() => router.navigate({pathname:'ProVisitorShow', params: { userId: user.userId }})}>
                             <View style={s.containerInfo}>
                                 <TxtInria>{user.user.first_name} {user.user.last_name}</TxtInria>
                                 <TxtInria style={s.job}>{user.user.job ? user.user.job : "Job not specified"}</TxtInria>

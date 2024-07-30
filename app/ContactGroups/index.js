@@ -9,12 +9,14 @@ import api from "../../config/config";
 import Avatar from "../../assets/icons/Avatar";
 import { showMessage } from "react-native-flash-message";
 import Header from "../../components/Header/Header";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-const ContactGroupScreen = ({ route, navigation }) => {
-    const { groupId } = route.params;
+const ContactGroupScreen = () => {
+    const { groupId } = useLocalSearchParams();
     const { userInfo, userToken } = useContext(AuthContext);
     const [users, setUsers] = useState([]);
     const [contactGroup, setContactGroup] = useState([]);
+    const router = useRouter();
 
     const onUserSearch = (userName) => {
         if (userName) {
@@ -96,17 +98,17 @@ const ContactGroupScreen = ({ route, navigation }) => {
         <>
             <Spinner/>
             <Header title={contactGroup.name}
-                onBackPress={() => navigation.goBack()}
+                onBackPress={() => router.back()}
                 showBackButton={true}
                 showChatroom={!contactGroup || !contactGroup.deletable}
-                onChatPress={() => navigation.navigate('ChatroomIndex', { userId: userInfo.id })}
+                onChatPress={() => router.navigate('Chatroom/ChatroomIndex', { userId: userInfo.id })}
                 showDelete={contactGroup && contactGroup.deletable}
                 onDeletePress={deleteContactGroup}>
                 <UserSearch onUserSearch={onUserSearch} />
             </Header>
             <ScrollView>
                 {users.map(user => (
-                    <TouchableOpacity key={user.id} onPress={() => navigation.navigate("UserContactGroup", {userId: user.id, groupId: contactGroup.id})}>
+                    <TouchableOpacity key={user.id} onPress={() => router.navigate({pathname: "UserContactGroup", params: {userId: user.id, groupId: contactGroup.id}})}>
                         <View style={s.contactGroup}>
                             <TxtInria>{user.first_name} {user.last_name}</TxtInria>
                             <Avatar uri={user.avatar_url} style={s.avatar_url} svgStyle={s.avatar_url} />

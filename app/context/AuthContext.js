@@ -60,9 +60,9 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         isLoggedIn().then(() => {
-            setAuthInterceptor(userToken, setUserToken);
+            setAuthInterceptor(userToken, setUserToken, router);
         });
-    }, []);
+    }, [userToken, router]);
 
 
     useEffect(() => {
@@ -208,6 +208,45 @@ export const AuthProvider = ({ children }) => {
             });
         }
     }
+
+    const deleteAccount = async () => {
+        try {
+            const response = await api.delete(`/signup`, {
+                headers: { Authorization: userToken },
+            });
+
+            if (response.status === 200 || response.status === 204) {
+                router.replace('/Home');
+                await AsyncStorage.removeItem('userToken');
+                await AsyncStorage.removeItem('groupId');
+                await AsyncStorage.removeItem('userInfo');
+                setUserInfo(null);
+                setGroupId(null);
+                setUserToken(null);
+                showMessage({
+                    message: "Account deleted successfully",
+                    type: "success",
+                    duration: 4000
+                });
+            } else {
+                showMessage({
+                    message: "Error deleting account",
+                    description: "There was a problem deleting your account. Please try again.",
+                    type: "danger",
+                    duration: 4000
+                });
+            }
+        } catch (error) {
+            console.error("Error deleting account:", error.response ? error.response.data : error.message);
+
+            showMessage({
+                message: "Error deleting account",
+                description: error.response ? error.response.data.message : "There was a problem deleting your account. Please try again.",
+                type: "danger",
+                duration: 4000
+            });
+        }
+    }
     
 
     const updateProfil = async (firstName, lastName, phone, email, job, industry, biography, website, linkedin, instagram, facebook, twitter, currentPassword, avatar) => {
@@ -345,6 +384,7 @@ export const AuthProvider = ({ children }) => {
                 register,
                 login,
                 logout,
+                deleteAccount,
                 updateProfil,
                 updatePreferences }}>
             {children}

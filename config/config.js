@@ -2,7 +2,6 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 
-
 // Déterminez l'URL de base en fonction de l'environnement
 const BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://linksphere-api-4dc51f475572.herokuapp.com'
@@ -12,7 +11,7 @@ const api = axios.create({
     baseURL: BASE_URL,
 }); 
 
-export const setAuthInterceptor = (userToken, setUserToken) => {
+export const setAuthInterceptor = (userToken, setUserToken, router) => {
     api.interceptors.response.use(
       response => response,
       async error => {
@@ -34,6 +33,7 @@ export const setAuthInterceptor = (userToken, setUserToken) => {
             [
               {
                   text: 'OK',
+                  onPress: () => router.push('/Home')
               }
             ],
             { cancelable: false }

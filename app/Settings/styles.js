@@ -74,6 +74,7 @@ export const s = StyleSheet.create({
         justifyContent: "space-between"
     },
 
+
     title: {
         marginBottom: 10
     },

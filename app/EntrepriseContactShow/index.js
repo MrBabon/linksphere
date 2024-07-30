@@ -8,9 +8,10 @@ import { Image, ScrollView, TextInput, TouchableOpacity, View } from "react-nati
 import { TxtInria, TxtInriaLight } from "../../components/TxtInria/TxtInria";
 import { TxtJostBold } from "../../components/TxtJost/TxtJost";
 import { ModalContactEntreprise } from "../../components/Modal/ModalContactEntreprise/ModalContactEntreprise";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-const EntrepriseContactShowScreen = ({ route, navigation }) => {
-    const { entrepriseId } = route.params;
+const EntrepriseContactShowScreen = () => {
+    const { entrepriseId } = useLocalSearchParams();
     const { userInfo, userToken } = useContext(AuthContext);
     const [entreprise, setEntreprise] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
@@ -18,6 +19,7 @@ const EntrepriseContactShowScreen = ({ route, navigation }) => {
     const [message, setMessage] = useState('');
     const [categoryDropdownVisible, setCategoryDropdownVisible] = useState(false);
     const [eventDropdownVisible, setEventDropdownVisible] = useState(false);
+    const router = useRouter();
 
 
     const categories = [
@@ -66,7 +68,7 @@ const EntrepriseContactShowScreen = ({ route, navigation }) => {
             <Header
                 title="Entreprise"
                 showBackButton={true}
-                onBackPress={() => navigation.goBack()}
+                onBackPress={() => router.back()}
                 >
                 <View style={s.viewBanner}>
                     <Image source={{uri: entreprise.banner_url}} style={s.banner}  onError={(e) => console.log('Error loading image:', e.nativeEvent.error)} />

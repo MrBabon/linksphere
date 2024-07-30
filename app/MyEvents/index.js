@@ -177,6 +177,8 @@ const MyEventsScreen = () => {
         };
         fetchData();
     }, [userInfo, userToken])
+
+    console.log(events);
     return (
         <>
             <Spinner/>
@@ -208,7 +210,7 @@ const MyEventsScreen = () => {
                                                     </View>
                                                 </View>
                                             </View>
-                                            <TouchableOpacity style={s.btn} onPress={() => navigation.navigate('Exhibitors', { eventId: event.id })}>
+                                            <TouchableOpacity style={s.btn} onPress={() => router.push({pathname:'ExhibitorsIndex', params: { id: event.id }})}>
                                                 <TxtJostSemiBold style={s.btnTxt}>Exhibitors & Visitors listing</TxtJostSemiBold>
                                             </TouchableOpacity>
                                         </View>

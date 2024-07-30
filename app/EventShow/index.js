@@ -57,6 +57,7 @@ const EventShow = () => {
             setEvent(event);
             setIsRegistered(response.data.data.attributes.is_registered || false);
             setParticipationId(response.data.data.attributes.participation_id || null);
+            setIsChecked(event.is_visible_in_participants || false);
           } catch (error) {
             console.error("Failed to fetch event:", error);
           }
@@ -67,7 +68,7 @@ const EventShow = () => {
         }
       }, [id, userToken]);
 
-    if (!event) {
+      if (!event) {
         return <TxtInria>Loading...</TxtInria>;
     }
 
@@ -233,7 +234,7 @@ const EventShow = () => {
             </View>
         </View>
     )
-    console.log(event);
+
     return (
         <>
             {header}
@@ -290,7 +291,7 @@ const EventShow = () => {
                                     <>
                                         <TouchableOpacity 
                                             style={s.btnParticipation} 
-                                            onPress={() => router.navigate('ProVisitorsIndex', { id: id })}>
+                                            onPress={() => router.push({pathname: 'ProVisitorsIndex', params: { id: id }})}>
                                             <TxtJost style={s.btnTxtParticipation}>Professional visitors</TxtJost>
                                         </TouchableOpacity>
                                     </>

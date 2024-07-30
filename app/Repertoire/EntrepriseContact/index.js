@@ -8,12 +8,13 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { EntrepriseSearch } from "../../../components/forms/EntrepriseSearch/EntrepriseSearch";
 import api from "../../../config/config";
 import { TxtInria, TxtInriaItalic } from "../../../components/TxtInria/TxtInria";
+import { useRouter } from "expo-router";
 
-const EntrepriseContactScreen = ({ navigation }) => {
+const EntrepriseContactScreen = () => {
     const {userInfo, userToken} = useContext(AuthContext);
     const [entreprises, setEntreprises] = useState([]);
     const [entreprisesSearch, setEntreprisesSearch] = useState([]);
-
+    const router = useRouter();
     const onEntrepriseSearch = (entrepriseName) => {
         if (entrepriseName) {
             const queryString = `?search=${entrepriseName}`
@@ -65,7 +66,7 @@ const EntrepriseContactScreen = ({ navigation }) => {
             title={"Groups"}>
             <View>
                 <View style={s.header_nav}>
-                    <TouchableOpacity style={s.navContainer} onPress={() => navigation.navigate('Repertoire')}>
+                    <TouchableOpacity style={s.navContainer} onPress={() => router.navigate('Repertoire')}>
                         <TxtJost style={s.nav_txt_active}>My Cards</TxtJost>
                     </TouchableOpacity>
                     <TouchableOpacity style={s.navContainer}>
@@ -81,7 +82,7 @@ const EntrepriseContactScreen = ({ navigation }) => {
                 {entreprisesSearch.length > 0 ? (
                     entreprisesSearch.map(entreprise => (
                         <View key={entreprise.id}>
-                            <TouchableOpacity style={s.entreprise} onPress={() => navigation.navigate("EntrepriseContactShow", {entrepriseId: entreprise.id})}>
+                            <TouchableOpacity style={s.entreprise} onPress={() => router.push({pathname: "EntrepriseContactShow", params: {entrepriseId: entreprise.id}})}>
                                 <View>
                                     <TxtInria>{entreprise.name}</TxtInria>
                                     <TxtInriaItalic>{entreprise.headline}</TxtInriaItalic>
@@ -94,7 +95,7 @@ const EntrepriseContactScreen = ({ navigation }) => {
                 ) : (
                     entreprises.map(entreprise => (
                         <View key={entreprise.id}>
-                            <TouchableOpacity style={s.entreprise} onPress={() => navigation.navigate("EntrepriseContactShow", {entrepriseId: entreprise.id})}>
+                            <TouchableOpacity style={s.entreprise} onPress={() => router.push({pathname: "EntrepriseContactShow", params: {entrepriseId: entreprise.id}})}>
                                 <View>
                                     <TxtInria>{entreprise.name}</TxtInria>
                                     <TxtInriaItalic>{entreprise.headline}</TxtInriaItalic>

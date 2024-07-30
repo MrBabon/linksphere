@@ -14,12 +14,13 @@ import Twitter from "../../assets/icons/Twitter";
 import Instagram from "../../assets/icons/Instagram";
 import Linkedin from "../../assets/icons/Linkedin";
 import Facebook from "../../assets/icons/Facebook";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 
 const Profil = () => {
     const {userInfo, userToken, isLoading} = useContext(AuthContext);
     const [avatar, setAvatar] = useState(null);
+    const router = useRouter();
 
 
     const settingButton = (
@@ -42,6 +43,12 @@ const Profil = () => {
 
 
     useEffect(() => {
+
+        if (!userInfo) {
+            router.replace('/Home');
+            return;
+        }
+
         const fetchData = async () => {
             try {
                 if (userInfo && userToken) {          
@@ -60,7 +67,12 @@ const Profil = () => {
         };
 
         fetchData();
-    }, [userInfo.id]);
+    }, [userInfo]);
+
+
+    if (!userInfo) {
+        return null; // ou une autre UI indiquant que l'utilisateur n'est pas connecté
+    }
 
     return (
         <>

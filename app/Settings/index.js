@@ -5,11 +5,13 @@ import { useContext, useState } from "react";
 import Settings from '../../assets/icons/Settings';
 import ChevronLeft from "../../assets/icons/ChevronLeft";
 import ChevronRight from "../../assets/icons/ChevronRight";
+import Close from "../../assets/icons/Close";
 import { ScrollView, Switch, TouchableOpacity, View } from "react-native";
 import { TxtInria, TxtInriaBold } from "../../components/TxtInria/TxtInria";
 import { TxtJost } from "../../components/TxtJost/TxtJost";
 import DoorExit from "../../assets/icons/Doorexit";
 import { useRouter } from "expo-router";
+import DeleteAccountButton from "../../components/DeleteAccount/DeleteAccount";
 
 
 const SettingsScreen = () => {
@@ -60,6 +62,8 @@ const SettingsScreen = () => {
         </View>
     )
 
+    
+
     return (
         <>
             <Spinner visible={isLoading}/>
@@ -105,20 +109,8 @@ const SettingsScreen = () => {
                                     trackColor={{ false: '#767577', true: '#FBD160' }}
                                     style={s.switch}/>
                             </View>
-                            <TouchableOpacity style={s.btn}>
-                                <TxtInriaBold style={s.txt}>Push notifications</TxtInriaBold>
-                                <TxtInriaBold style={{ marginBottom: 3, marginRight: 2 }}>+</TxtInriaBold>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={s.btn}>
-                                <TxtInriaBold style={s.txt}>Messages from contacts</TxtInriaBold>
-                                <ChevronRight />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={s.btn}>
-                                <TxtInriaBold style={s.txt}>Messages from everyone</TxtInriaBold>
-                                <ChevronRight />
-                            </TouchableOpacity>
                         </View>
-                        <View style={s.lign}></View>
+                        {/* <View style={s.lign}></View>
                         <View style={s.section_card}>
                             <TxtInria style={s.title}>Company</TxtInria>
                             <TouchableOpacity style={s.btn}>
@@ -133,7 +125,7 @@ const SettingsScreen = () => {
                                 <TxtInriaBold style={s.txt}>Create an event</TxtInriaBold>
                                 <ChevronRight />
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                         <View style={s.lign}></View>
                         <View style={s.section_card}>
                             <TxtInria style={s.title}>More</TxtInria>
@@ -153,10 +145,7 @@ const SettingsScreen = () => {
                                 <TxtInriaBold style={s.txt}>Manage blocked profil</TxtInriaBold>
                                 <ChevronRight />
                             </TouchableOpacity>
-                            <TouchableOpacity style={s.btn}>
-                                <TxtInriaBold style={s.txt}>Delete your account</TxtInriaBold>
-                                <ChevronRight />
-                            </TouchableOpacity>
+                            <DeleteAccountButton />
                         </View>
                         <View style={s.container_log_out}>
                             <TouchableOpacity style={s.btn_log_out} onPress={() => logout()}>
