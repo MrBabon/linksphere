@@ -11,20 +11,22 @@ import { ModalVisiblePro } from "../../components/Modal/ModalVisiblePro/ModalVis
 import Danger from "../../assets/icons/Danger";
 import Checkbox from "expo-checkbox";
 import { showMessage } from "react-native-flash-message";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-const ExhibitorsScreen = ({ route, navigation }) => {
-    const { eventId } = route.params;
+const ExhibitorsScreen = () => {
+    const { id } = useLocalSearchParams();
     const { userInfo, userToken } = useContext(AuthContext);
     const [exhibitors, setExhibitors] = useState([]);
     const [events, setEvents] = useState([]);
     const [participationId, setParticipationId] = useState(null);
     const [isChecked, setIsChecked] = useState(false);
     const [modalVisiblePro, setModalVisiblePro] = useState(false);
+    const router = useRouter();
 
 
     // Header
     const backButton = (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => router.back()}>
             <ChevronLeft />
         </TouchableOpacity>
     );
@@ -47,7 +49,7 @@ const ExhibitorsScreen = ({ route, navigation }) => {
                     </TouchableOpacity>
 
                 ) : (
-                    <TouchableOpacity onPress={() => navigation.navigate('ProVisitors', { eventId: eventId })}>
+                    <TouchableOpacity onPress={() => router.navigate('ProVisitors', { eventId: id })}>
                         <TxtJost>Professional Visitors</TxtJost>
                     </TouchableOpacity>
                 )}
@@ -69,7 +71,7 @@ const ExhibitorsScreen = ({ route, navigation }) => {
         const fetchData = async () => {
             try {
                 if (userInfo && userToken) {
-                    const response = await api.get(`/events/${eventId}/exposant`, {
+                    const response = await api.get(`/events/${id}/exposant`, {
                         headers: { Authorization: userToken }
                     });
                     const data = response.data;
@@ -105,7 +107,7 @@ const ExhibitorsScreen = ({ route, navigation }) => {
             }
         };
         fetchData();
-    }, [eventId, userToken]);
+    }, [id, userToken]);
 
     const updateParticipation = async () => {
         if (!isChecked) {
@@ -123,7 +125,7 @@ const ExhibitorsScreen = ({ route, navigation }) => {
             const payload = {
                 visible_in_participants: isChecked
             };
-            const response = await api.patch(`/events/${eventId}/participations/${participationId}`, payload, {
+            const response = await api.patch(`/events/${id}/participations/${participationId}`, payload, {
                 headers: { Authorization: userToken }
             });
             if (response.status === 200) {
@@ -152,7 +154,7 @@ const ExhibitorsScreen = ({ route, navigation }) => {
             <ScrollView>
                 {exhibitors.map(exhibitor => (
                         <View key={exhibitor.id}>
-                            <TouchableOpacity style={s.card} onPress={() => navigation.navigate('Exhibitor', { eventId: eventId, exhibitorId: exhibitor.id })}>
+                            <TouchableOpacity style={s.card} onPress={() => router.navigate('Exhibitor', { eventId: id, exhibitorId: exhibitor.id })}>
                                 <View style={s.cardImg}>
                                     <Image source={{ uri: exhibitor.logo_url }} style={s.logo} onError={(e) => console.log('Error loading image:', e.nativeEvent.error)} />
                                 </View>

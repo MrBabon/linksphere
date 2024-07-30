@@ -10,11 +10,13 @@ import api from "../../config/config";
 import { format, parseISO } from "date-fns";
 import  MapPin from "../../assets/icons/MapPin"
 import CalendarEvent from "../../assets/icons/CalendarEvent"
+import { useRouter } from "expo-router";
 
-const MyEventsScreen = ({ navigation }) => {
+const MyEventsScreen = () => {
     const { userInfo, userToken } = useContext(AuthContext);
     const [events, setEvents] = useState([]);
     const [initialEvents, setInitialEvents] = useState([]);
+    const router = useRouter();
 
 
     const handleOutsidePress = () => {
@@ -118,10 +120,10 @@ const MyEventsScreen = ({ navigation }) => {
             </View>
             <View>
                 <View style={s.header_nav}>
-                    <TouchableOpacity  onPress={() => navigation.navigate('Events')}>
+                    <TouchableOpacity  onPress={() => router.navigate('EventIndex')}>
                         <TxtJost style={s.nav_txt}>All Upcoming Events</TxtJost>
                     </TouchableOpacity>
-                    <TouchableOpacity style={s.navContainer} onPress={() => navigation.navigate('MyEvents')}>
+                    <TouchableOpacity style={s.navContainer} onPress={() => router.navigate('MyEvents')}>
                         <TxtJostBold style={s.nav_txt_active}>My Events</TxtJostBold>
                         <View style={s.underline}></View>
                     </TouchableOpacity>
@@ -186,7 +188,7 @@ const MyEventsScreen = ({ navigation }) => {
                             <React.Fragment key={month}>
                                 <TxtInria style={s.monthHeader}>{month}</TxtInria>
                                 {eventsOfMonth.map(event => (
-                                    <TouchableOpacity key={event.id} onPress={() => navigation.navigate('Event', { eventId: event.id })} >
+                                    <TouchableOpacity key={event.id} onPress={() => router.push({pathname: `/EventShow`, params: { id: event.id}})} >
                                         <View style={s.card}>
                                             <View style={s.cardTitle}>
                                                 <TxtJostBold style={s.txtTitle}>{event.title}</TxtJostBold>

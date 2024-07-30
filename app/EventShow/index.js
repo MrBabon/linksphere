@@ -8,7 +8,7 @@ import { showMessage } from "react-native-flash-message";
 import { TxtJost, TxtJostBold, TxtJostSemiBold } from "../../components/TxtJost/TxtJost.jsx";
 import CalendarEvent from "../../assets/icons/CalendarEvent.js";
 import MapPin from "../../assets/icons/MapPin.js";
-import { format, parseISO } from "date-fns";
+import { format, isValid, parseISO } from "date-fns";
 import Globe from "../../assets/icons/Globe.js";
 import ChevronLeft from "../../assets/icons/ChevronLeft.js";
 import Danger from "../../assets/icons/Danger.js";
@@ -16,10 +16,11 @@ import { ModalEvent } from "../../components/Modal/ModalEvent/ModalEvent.jsx";
 import Checkbox from 'expo-checkbox';
 import { ModalDelete } from "../../components/Modal/ModalDelete/ModalDelete.jsx";
 import { ModalVisiblePro } from "../../components/Modal/ModalVisiblePro/ModalVisiblePro.jsx"
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 
-const EventShowScreen = ({ route, navigation }) => {
-    const { eventId } = route.params;
+const EventShow = () => {
+    const { id } = useLocalSearchParams();
     const { userInfo, userToken } = useContext(AuthContext);
     const [event, setEvent] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
@@ -29,6 +30,7 @@ const EventShowScreen = ({ route, navigation }) => {
     const [participationId, setParticipationId] = useState(null);
     const [isChecked, setIsChecked] = useState(false);
     const [registrationCode, setRegistrationCode] = useState('');
+    const router = useRouter();
 
 
     const openURL = () => {
@@ -46,36 +48,42 @@ const EventShowScreen = ({ route, navigation }) => {
 
 
     useEffect(() => {
-
         const fetchEvent = async () => {
-            try {
-                const response = await api.get(`/events/${eventId}`, {
-                    headers: { Authorization: userToken }
-                });
-                const data = response.data.data
-                const event = data.attributes
-                setEvent(event);
-
-                // Utilisation directe des données de l'API
-                const isUserRegistered = event.is_registered;
-                setIsRegistered(isUserRegistered);
-                const isUserChecked = event.is_visible_in_participants;
-                setIsChecked(isUserChecked);
-                const participationId = event.participation_id;
-                if (participationId) {
-                    setParticipationId(participationId);
-                }
-
-            } catch (e) {
-                console.error('Failed to fetch event details: ', e);
-            }
+          try {
+            const response = await api.get(`/events/${id}`, {
+              headers: { Authorization: userToken },
+            });
+            const event = response.data.data.attributes;
+            setEvent(event);
+            setIsRegistered(response.data.data.attributes.is_registered || false);
+            setParticipationId(response.data.data.attributes.participation_id || null);
+          } catch (error) {
+            console.error("Failed to fetch event:", error);
+          }
         };
-        fetchEvent();
-
-    }, [eventId, userToken]);
+    
+        if (id) {
+          fetchEvent();
+        }
+      }, [id, userToken]);
 
     if (!event) {
         return <TxtInria>Loading...</TxtInria>;
+    }
+
+
+    // Vérifiez si les dates existent avant de les parser
+    const startTimeString = event.start_time;
+    const endTimeString = event.end_time;
+    if (!startTimeString || !endTimeString) {
+        console.error('Start time or end time is missing:', startTimeString, endTimeString);
+        return <TxtInria>Error loading event dates</TxtInria>;
+    }
+    const startTime = parseISO(startTimeString);
+    const endTime = parseISO(endTimeString);
+    if (!isValid(startTime) || !isValid(endTime)) {
+        console.error('Start time or end time is invalid:', startTime, endTime);
+        return <TxtInria>Error loading event dates</TxtInria>;
     }
     
     // Création participation
@@ -85,7 +93,7 @@ const EventShowScreen = ({ route, navigation }) => {
                 visible_in_participants: isChecked,
                 registration_code: registrationCode
             };
-            const response = await api.post(`/events/${eventId}/participations`, payload, {
+            const response = await api.post(`/events/${id}/participations`, payload, {
                 headers: { Authorization: userToken }
             });
             if (response.status === 201 && response.data && response.data.data) {
@@ -122,7 +130,7 @@ const EventShowScreen = ({ route, navigation }) => {
     // Suppression participation
     const destroyParticipation = async () => {
         try {
-            const response = await api.delete(`/events/${eventId}/participations/${participationId}`, {
+            const response = await api.delete(`/events/${id}/participations/${participationId}`, {
                 headers: { Authorization: userToken }
             });
     
@@ -162,7 +170,7 @@ const EventShowScreen = ({ route, navigation }) => {
             const payload = {
                 visible_in_participants: isChecked
             };
-            const response = await api.patch(`/events/${eventId}/participations/${participationId}`, payload, {
+            const response = await api.patch(`/events/${id}/participations/${participationId}`, payload, {
                 headers: { Authorization: userToken }
             });
             if (response.status === 200) {
@@ -185,7 +193,7 @@ const EventShowScreen = ({ route, navigation }) => {
 
     // Header
     const backButton = (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => router.back()}>
             <ChevronLeft/>
         </TouchableOpacity>
     )
@@ -201,20 +209,20 @@ const EventShowScreen = ({ route, navigation }) => {
                 <View style={s.header_nav}>
                     {!isRegistered ? (
                         <>
-                            <TouchableOpacity style={s.navContainer} onPress={() => navigation.navigate('Events')}>
+                            <TouchableOpacity style={s.navContainer} onPress={() => router.navigate('Events')}>
                                 <TxtJostBold style={s.nav_txt_active}>All Upcoming Events</TxtJostBold>
                                 <View style={s.underline}></View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigation.navigate('MyEvents')}>
+                            <TouchableOpacity onPress={() => router.navigate('MyEvents')}>
                                 <TxtJost style={s.nav_txt}>My Events</TxtJost>
                             </TouchableOpacity>
                         </>
                     ) : (
                         <>
-                            <TouchableOpacity  onPress={() => navigation.navigate('Events')}>
+                            <TouchableOpacity  onPress={() => router.navigate('Events')}>
                                 <TxtJost style={s.nav_txt}>All Upcoming Events</TxtJost>
                             </TouchableOpacity>
-                            <TouchableOpacity  style={s.navContainer} onPress={() => navigation.navigate('MyEvents')}>
+                            <TouchableOpacity  style={s.navContainer} onPress={() => router.navigate('MyEvents')}>
                                 <TxtJostBold style={s.nav_txt_active}>My Events</TxtJostBold>
                                 <View style={s.underline}></View>
                             </TouchableOpacity>
@@ -225,7 +233,7 @@ const EventShowScreen = ({ route, navigation }) => {
             </View>
         </View>
     )
-
+    console.log(event);
     return (
         <>
             {header}
@@ -245,7 +253,7 @@ const EventShowScreen = ({ route, navigation }) => {
                             </View>
                             <View style={s.cardInfo}>
                                 <CalendarEvent />
-                                <TxtInria>{format(parseISO(event.start_time), 'MMMM d')} to {format(parseISO(event.end_time), 'd')}</TxtInria>
+                                <TxtInria>{startTime ? format(startTime, 'MMMM d') : 'N/A'} to {endTime ? format(endTime, 'd') : 'N/A'}</TxtInria>
                             </View>
                         </View>
                         <View style={s.cardLink}>
@@ -267,7 +275,7 @@ const EventShowScreen = ({ route, navigation }) => {
                             <View style={s.viewBtnParticipation}>
                                 <TouchableOpacity 
                                         style={s.btnParticipation}
-                                        onPress={() => navigation.navigate('Exhibitors', { eventId: eventId })}>
+                                        onPress={() => router.push({pathname: `/ExhibitorsIndex`, params: { id: id}})}>
                                     <TxtJost style={s.btnTxtParticipation}>Exhibitors</TxtJost>
                                 </TouchableOpacity>
                                 {!isChecked ? (
@@ -282,7 +290,7 @@ const EventShowScreen = ({ route, navigation }) => {
                                     <>
                                         <TouchableOpacity 
                                             style={s.btnParticipation} 
-                                            onPress={() => navigation.navigate('ProVisitors', { eventId: eventId })}>
+                                            onPress={() => router.navigate('ProVisitorsIndex', { id: id })}>
                                             <TxtJost style={s.btnTxtParticipation}>Professional visitors</TxtJost>
                                         </TouchableOpacity>
                                     </>
@@ -308,7 +316,7 @@ const EventShowScreen = ({ route, navigation }) => {
                         </View>
                         <View style={s.cardInfo}>
                             <CalendarEvent color="#F9447F" />
-                            <TxtInriaBold style={s.txtinfo}>{format(parseISO(event.start_time), 'MMMM d')} to {format(parseISO(event.end_time), 'd')}</TxtInriaBold>
+                            <TxtInriaBold style={s.txtinfo}>{startTime ? format(startTime, 'MMMM d') : 'N/A'} to {endTime ? format(endTime, 'd') : 'N/A'}</TxtInriaBold>
                         </View>
                     </View>
                     <View style={s.wraper}>
@@ -375,4 +383,4 @@ const EventShowScreen = ({ route, navigation }) => {
     )
 }
 
-export default EventShowScreen
+export default EventShow

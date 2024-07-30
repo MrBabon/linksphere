@@ -86,9 +86,9 @@ export const s = StyleSheet.create({
 
     yellow: { 
         width: '100%',
-        height: 3,
+        height: 1,
         marginTop: 16,
-        backgroundColor: "#FFD115"
+        backgroundColor: "#F9447F"
     },
 
     detail: {

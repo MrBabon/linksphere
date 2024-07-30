@@ -6,12 +6,40 @@ import Settings from '../../assets/icons/Settings';
 import ChevronLeft from "../../assets/icons/ChevronLeft";
 import { TxtJost } from "../../components/TxtJost/TxtJost";
 import { useContext, useState } from "react";
-import {Picker} from '@react-native-picker/picker';
 import { AuthContext } from "../context/AuthContext";
 import Avatar from "../../assets/icons/Avatar";
 import { showMessage } from "react-native-flash-message";
 import { useRouter } from "expo-router";
+import IndustryPicker from "../../components/Modal/ModalIndustry/IndustryPicker";
 
+
+const industries = [
+    { label: 'Agriculture', value: 'agriculture' },
+    { label: 'Art & Design', value: 'art_design' },
+    { label: 'Education', value: 'education' },
+    { label: 'Energy', value: 'energy' },
+    { label: 'Engineering', value: 'engineering' },
+    { label: 'Environment', value: 'environment' },
+    { label: 'Finance', value: 'finance' },
+    { label: 'Healthcare', value: 'health' },
+    { label: 'Human Resources', value: 'human_resources' },
+    { label: 'Manufacturing', value: 'manufacturing' },
+    { label: 'Media', value: 'media' },
+    { label: 'Professional Services', value: 'professional_services' },
+    { label: 'Public Administration', value: 'public_administration' },
+    { label: 'Real Estate', value: 'real_estate' },
+    { label: 'Retail', value: 'retail' },
+    { label: 'Science', value: 'science' },
+    { label: 'Technology', value: 'technology' },
+    { label: 'Telecommunications', value: 'telecommunications' },
+    { label: 'Tourism', value: 'tourism' },
+    { label: 'Transportation', value: 'transportation' },
+];
+
+const getLabelForValue = (value) => {
+    const industry = industries.find(ind => ind.value === value);
+    return industry ? industry.label : '';
+};
 
 const EditScreen = () => {
     const {updateProfil, userInfo} = useContext(AuthContext);
@@ -32,10 +60,10 @@ const EditScreen = () => {
     const [previewUri, setPreviewUri] = useState(null);
     const [currentPassword, setCurrentPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
     const router = useRouter();
 
 
-    
     const settingButton = (
         <TouchableOpacity onPress={() => router.navigate('Settings')}>
             <Settings/>
@@ -66,7 +94,7 @@ const EditScreen = () => {
             });
             return;
         } 
-        updateProfil(firstName, lastName, phone, email, job, biography, website, linkedin, instagram, facebook, twitter, currentPassword, avatar)
+        updateProfil(firstName, lastName, phone, email, job, industry, biography, website, linkedin, instagram, facebook, twitter, currentPassword, avatar)
         router.navigate('Profil')
     }
     
@@ -81,7 +109,6 @@ const EditScreen = () => {
             const newAvatar = result.assets[0].uri;
             setAvatar([newAvatar])
             setPreviewUri(newAvatar);
-            console.log("Picked image URI:", newAvatar);
         }
     }
 
@@ -130,30 +157,15 @@ const EditScreen = () => {
                             value={job}
                             onChangeText={setJob} />
                         <TxtInriaBold style={s.txt}>Industry</TxtInriaBold>
-                        {/* <Picker style={s.picker} 
+                        <TouchableOpacity onPress={() => setModalVisible(true)}  style={s.inputIndustry}>
+                            <TxtInria style={s.inputIndustryText}>{industry ? getLabelForValue(industry) : 'Select Industry'}</TxtInria>
+                        </TouchableOpacity>
+                        <IndustryPicker
                                 selectedValue={industry}
-                                onValueChange={(itemValue, itemIndex) => setIndustry(itemValue)}>
-                            <Picker.Item label="Agriculture" value="agriculture" />
-                            <Picker.Item label="Art & Design" value="art_design" />
-                            <Picker.Item label="Education" value="education" />
-                            <Picker.Item label="Energy" value="energy" />
-                            <Picker.Item label="Engineering" value="engineering" />
-                            <Picker.Item label="Environment" value="environment" />
-                            <Picker.Item label="Finance" value="finance" />
-                            <Picker.Item label="Healthcare" value="health" />
-                            <Picker.Item label="Human Resources" value="human_resources" />
-                            <Picker.Item label="Manufacturing" value="manufacturing" />
-                            <Picker.Item label="Media" value="media" />
-                            <Picker.Item label="Professional Services" value="professional_services" />
-                            <Picker.Item label="Public Administration" value="public_administration" />
-                            <Picker.Item label="Real Estate" value="real_estate" />
-                            <Picker.Item label="Retail" value="retail" />
-                            <Picker.Item label="Science" value="science" />
-                            <Picker.Item label="Technology" value="technology" />
-                            <Picker.Item label="Telecommunications" value="telecommunications" />
-                            <Picker.Item label="Tourism" value="tourism" />
-                            <Picker.Item label="Transportation" value="transportation" />
-                        </Picker> */}
+                                onValueChange={setIndustry}
+                                isVisible={modalVisible}
+                                onClose={() => setModalVisible(false)}
+                        />
                         <TxtInriaBold style={s.txt}>Biography</TxtInriaBold>
                         <TextInput
                             style={s.input_bio}

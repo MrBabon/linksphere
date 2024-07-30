@@ -69,6 +69,22 @@ export const s = StyleSheet.create({
         paddingHorizontal: 14
     },
 
+    inputIndustry: {
+        backgroundColor: "#FFFFFF",
+        height: 40,
+        marginTop: 10,
+        marginBottom: 30,
+        borderRadius: 5,
+        paddingHorizontal: 14,
+        fontSize: 16,
+        justifyContent: "center",
+    },
+
+    inputIndustryText: {
+        fontSize: 16,
+        textAlign: "center", // Centre le texte horizontalement
+    },
+
     input_bio:{
         backgroundColor: "#FFFFFF",
         height: 130,
@@ -105,7 +121,7 @@ export const s = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        backgroundColor: "#FFD115",
+        backgroundColor: "#FBD160",
         paddingVertical: 7,
         paddingHorizontal: 24,
         borderRadius: 50,

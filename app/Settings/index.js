@@ -86,7 +86,7 @@ const SettingsScreen = () => {
                                 <Switch
                                     value={pushNotifications}
                                     onValueChange={(value) => handleUpdatePreferences('push_notifications', value)}
-                                    trackColor={{ false: '#767577', true: '#FFD115' }}
+                                    trackColor={{ false: '#767577', true: '#FBD160' }}
                                     style={s.switch}/>
                             </View>
                             <View style={s.btn}>
@@ -94,7 +94,7 @@ const SettingsScreen = () => {
                                 <Switch
                                     value={messagesFromContacts}
                                     onValueChange={(value) => handleUpdatePreferences('messages_from_contacts', value)}
-                                    trackColor={{ false: '#767577', true: '#FFD115' }}
+                                    trackColor={{ false: '#767577', true: '#FBD160' }}
                                     style={s.switch}/>
                             </View>
                             <View style={s.btn}>
@@ -102,7 +102,7 @@ const SettingsScreen = () => {
                                 <Switch
                                     value={messagesFromEveryone}
                                     onValueChange={(value) => handleUpdatePreferences('messages_from_everyone', value)}
-                                    trackColor={{ false: '#767577', true: '#FFD115' }}
+                                    trackColor={{ false: '#767577', true: '#FBD160' }}
                                     style={s.switch}/>
                             </View>
                             <TouchableOpacity style={s.btn}>

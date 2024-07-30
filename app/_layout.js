@@ -1,10 +1,11 @@
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import { Easing, StatusBar } from "react-native";
 import { AuthContext, AuthProvider } from "./context/AuthContext";
 import FlashMessage from "react-native-flash-message";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Footer from "../components/Footer/Footer";
 import { View } from "react-native-animatable";
+import { set } from "date-fns";
 
 export default function RootLayout() {
 
@@ -20,7 +21,16 @@ export default function RootLayout() {
 
 function Main() {
     const { userToken } = useContext(AuthContext);
-  
+    const router = useRouter();
+    const segments = useSegments();
+    const [activePage, setActivePage] = useState('Home');
+
+
+    useEffect(() => {
+        const currentRoute = segments[segments.length - 1];
+        setActivePage(currentRoute);
+    }, [segments]);
+
     return (
       <View style={{ flex: 1 }}>
         <Stack screenOptions={{
@@ -44,7 +54,7 @@ function Main() {
                                 },}}>
 
         </Stack>
-        {userToken && <Footer />}
+        {userToken && <Footer activePage={activePage} />}
       </View>
     );
   }

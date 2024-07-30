@@ -17,7 +17,7 @@ import Facebook from "../../assets/icons/Facebook";
 import { Link } from "expo-router";
 
 
-const Profil = ({ navigation }) => {
+const Profil = () => {
     const {userInfo, userToken, isLoading} = useContext(AuthContext);
     const [avatar, setAvatar] = useState(null);
 
@@ -88,15 +88,15 @@ const Profil = ({ navigation }) => {
                     </View>
                 </View>
                 <View style={s.social}>
-                    <Twitter  url={userInfo.twitter} />
-                    <Linkedin url={userInfo.linkedin} />
-                    <Facebook url={userInfo.facebook} />
-                    <Instagram url={userInfo.instagram} />
+                    <Twitter  url={userInfo.twitter} color="#FBD160" />
+                    <Linkedin url={userInfo.linkedin} color="#FBD160" />
+                    <Facebook url={userInfo.facebook} color="#FBD160" />
+                    <Instagram url={userInfo.instagram} color="#FBD160" />
                 </View>
                 <View style={s.yellow}></View>
                 <View style={s.detail}>
                     <TxtInriaBold style={s.job}>{userInfo.job}</TxtInriaBold>
-                    <TxtInriaLight style={s.industry}>Industry (Technology)</TxtInriaLight>
+                    <TxtInriaLight style={s.industry}>{userInfo.industry}</TxtInriaLight>
                     <TxtInria style={s.entreprise}>Nom de l'entreprise</TxtInria>
                     <TxtInria style={s.bio}>{userInfo.biography}</TxtInria>
                 </View>

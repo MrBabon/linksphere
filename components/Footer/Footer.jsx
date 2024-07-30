@@ -23,10 +23,10 @@ const Footer = ({ activePage }) => {
                         </TouchableOpacity>
                     <View style={s.footer_container}>
                         <TouchableOpacity 
-                                style={activePage === 'Events' ? s.activeBtn : s.btn}
+                                style={activePage === 'EventIndex' ? s.activeBtn : s.btn}
                                 onPress={() => {router.push('EventIndex')}}>
-                            <Calendar color={activePage === 'Events' ? '#1AC1B9' : '#3A3A3A'}/>
-                            <TxtInria style={activePage === 'Events' ? s.activeTxt : s.txt}>Events</TxtInria>
+                            <Calendar color={activePage === 'EventIndex' ? '#1AC1B9' : '#3A3A3A'}/>
+                            <TxtInria style={activePage === 'EventIndex' ? s.activeTxt : s.txt}>Events</TxtInria>
                         </TouchableOpacity>
                         <TouchableOpacity 
                                 style={activePage === 'Profil' ? s.activeBtn : s.btn}

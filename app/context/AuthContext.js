@@ -210,7 +210,7 @@ export const AuthProvider = ({ children }) => {
     }
     
 
-    const updateProfil = async (firstName, lastName, phone, email, job,  biography, website, linkedin, instagram, facebook, twitter, currentPassword, avatar) => {
+    const updateProfil = async (firstName, lastName, phone, email, job, industry, biography, website, linkedin, instagram, facebook, twitter, currentPassword, avatar) => {
         setIsLoading(true); 
         let formData = new FormData();
 
@@ -220,6 +220,7 @@ export const AuthProvider = ({ children }) => {
         formData.append('user[phone]', phone);
         formData.append('user[email]', email);
         formData.append('user[job]', job);
+        formData.append('user[industry]', industry);
         formData.append('user[biography]', biography);
         formData.append('user[website]', website);
         formData.append('user[linkedin]', linkedin);

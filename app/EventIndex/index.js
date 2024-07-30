@@ -10,13 +10,14 @@ import { format, parseISO } from 'date-fns';
 import CalendarEvent from "../../assets/icons/CalendarEvent";
 import MapPin from "../../assets/icons/MapPin";
 import { EventSearch } from "../../components/forms/EventSearch/EventSearch";
+import { useRouter } from "expo-router";
 
 
-const EventIndexScreen = ({ navigation }) => {
+const EventIndexScreen = () => {
     const { userInfo, userToken } = useContext(AuthContext)
     const [events, setEvents] = useState([]);
     const [initialEvents, setInitialEvents] = useState([]);
-
+    const router = useRouter();
     
     const handleOutsidePress = () => {
         if (visible) {
@@ -109,7 +110,7 @@ const EventIndexScreen = ({ navigation }) => {
                         <TxtJostBold style={s.nav_txt_active}>All Upcoming Events</TxtJostBold>
                         <View style={s.underline}></View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('MyEvents')}>
+                    <TouchableOpacity onPress={() => router.navigate('MyEvents')}>
                         <TxtJost style={s.nav_txt}>My Events</TxtJost>
                     </TouchableOpacity>
                 </View>
@@ -167,7 +168,7 @@ const EventIndexScreen = ({ navigation }) => {
                             <React.Fragment key={month}>
                                 <TxtInria style={s.monthHeader}>{month}</TxtInria>
                                 {eventsOfMonth.map(event => (
-                                    <TouchableOpacity key={event.id} onPress={() => navigation.navigate('Event', { eventId: event.id })}>
+                                    <TouchableOpacity key={event.id} onPress={() => router.push({pathname: `/EventShow`, params: { id: event.id}})}>
                                         <View style={s.card}>
                                             <View style={s.cardImg}>
                                                 <Image source={{ uri: event.logo_url }} style={s.logo} onError={(e) => console.log('Error loading image:', e.nativeEvent.error)} />
