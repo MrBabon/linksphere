@@ -8,15 +8,17 @@ import { AuthContext } from "../context/AuthContext";
 import api from "../../config/config";
 import QRCode from 'react-native-qrcode-svg';
 import { CameraView, useCameraPermissions } from "expo-camera";
+import { useRouter } from "expo-router";
 
 
-const ScanScreen = ({ navigation }) => {
+const ScanScreen = () => {
     const {userInfo, userToken, isLoading, groupId} = useContext(AuthContext);
     const [qrCode, setQrCode] = useState('');
     const [facing, setFacing] = useState('back');
     const [permission, requestPermission] = useCameraPermissions();
     const [scanned, setScanned] = useState(false);
-
+    const router = useRouter();
+    
     useEffect(() => {   
         (async () => {
             if (permission && !permission.granted) {
@@ -42,10 +44,9 @@ const ScanScreen = ({ navigation }) => {
                     }
                 });
                 const data = response.data.user.qr_code;
+                
                 setQrCode(data);
-            } else {
-                console.error('No user info available');
-            }
+            } 
         } catch (error) {
             console.error('Error fetching user details:', error);
         }
@@ -72,7 +73,7 @@ const ScanScreen = ({ navigation }) => {
                     const userContactgroupId = response.data.data.id;
                     console.log('UserContactGroup created:', userContactgroupId);
                     console.log(groupId);
-                    navigation.navigate('UserContactGroup', { userContactgroupId, groupId, userId });
+                    router.push({pathname: 'UserContactGroup', params: { userContactgroupId, groupId, userId }});
                 } catch (error) {
                     console.error('Error navigating to ProVisitor:', error);
                 }

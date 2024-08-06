@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter();
     
-    const fetchContactGroup = useCallback(async () => {
+    const fetchContactGroup = async (userInfo, userToken) => {
         if (userInfo && userToken) {
             try {
                 const response = await api.get(`/users/${userInfo.id}/repertoire`, {
@@ -34,20 +34,28 @@ export const AuthProvider = ({ children }) => {
                 console.error('Error fetching contact group ID:', error);
             }
         }
-    }, [userInfo, userToken]);
+    };
 
 
     const isLoggedIn = async () => {
         try {
             setSplashLoading(true);
+
             let userInfo = await AsyncStorage.getItem('userInfo');
             let userToken = await AsyncStorage.getItem('userToken');
             let groupId = await AsyncStorage.getItem('groupId');
+
             userInfo = JSON.parse(userInfo);
-            if(userInfo) {
+
+            if(userInfo && userToken) {
                 setUserInfo(userInfo)
                 setUserToken(userToken)
-                setGroupId(groupId)
+                
+                if (!groupId) {
+                    await fetchContactGroup(userInfo, userToken);
+                } else {
+                    setGroupId(groupId);
+                }
             }
             setSplashLoading(false);
         } catch(e) {
@@ -136,7 +144,6 @@ export const AuthProvider = ({ children }) => {
                 'Content-Type': 'application/json'
               }
             });
-            console.log("Login response:", response); // Debug log
             let userInfo = response.data.data;
             let token = response.headers['authorization'];
             setUserInfo(userInfo);
@@ -211,11 +218,16 @@ export const AuthProvider = ({ children }) => {
 
     const deleteAccount = async () => {
         try {
+            console.log("Starting account deletion");
+
             const response = await api.delete(`/signup`, {
                 headers: { Authorization: userToken },
             });
 
+
             if (response.status === 200 || response.status === 204) {
+                console.log("Account deleted successfully, clearing local data");
+
                 router.replace('/Home');
                 await AsyncStorage.removeItem('userToken');
                 await AsyncStorage.removeItem('groupId');
@@ -228,7 +240,9 @@ export const AuthProvider = ({ children }) => {
                     type: "success",
                     duration: 4000
                 });
+                
             } else {
+                console.log("Error deleting account: unexpected status", response.status);
                 showMessage({
                     message: "Error deleting account",
                     description: "There was a problem deleting your account. Please try again.",

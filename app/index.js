@@ -1,5 +1,5 @@
 import { ActivityIndicator, View } from "react-native";
-import { AuthContext, AuthProvider } from "./context/AuthContext";
+import { AuthContext } from "./context/AuthContext";
 import { Stack, useRouter } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import { useFonts } from "expo-font";
@@ -26,11 +26,16 @@ function Main() {
   const router = useRouter();
 
   useEffect(() => {
+    console.log("splashLoading:", splashLoading);
+    console.log("userToken:", userToken);
+    
     if (!splashLoading) {
-      if (userToken) {
-        router.replace("/Profil");
-      } else {
+      if (!userToken) {
+        console.log("No userToken, redirecting to Home");
         router.replace("/Home");
+      } else {
+        console.log("User token exists, redirecting to Profil");
+        router.replace("/Profil");
       }
     }
   }, [userToken, splashLoading]);

@@ -178,7 +178,6 @@ const MyEventsScreen = () => {
         fetchData();
     }, [userInfo, userToken])
 
-    console.log(events);
     return (
         <>
             <Spinner/>

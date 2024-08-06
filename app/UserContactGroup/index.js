@@ -21,15 +21,17 @@ import ChevronBottom from "../../assets/icons/ChevronBottom";
 import { ModalContactGroup } from "../../components/Modal/ModalContactGroup/ModalContactGroup";
 import { useFocusEffect } from "@react-navigation/native";
 import { showMessage } from "react-native-flash-message";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-const UserContactGroupScreen = ({ route, navigation }) => {
-    const { userContactgroupId, groupId, userId } = route.params
+const UserContactGroupScreen = () => {
+    const { userContactgroupId, groupId, userId } = useLocalSearchParams();
     const { userInfo, userToken } = useContext(AuthContext);
     const [user, setUser] = useState([]);
     const [contactGroup, setContactGroup] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [note, setNote] = useState([]);
     const [visible, setVisible] = useState(false);
+    const router = useRouter();
 
 
 
@@ -144,15 +146,16 @@ const UserContactGroupScreen = ({ route, navigation }) => {
     };
 
 
-
+    console.log("User: ", user);
+    
     return (
         <>
             <Spinner/>
             <Header title="Contact"
                     showBackButton={true}
-                    onBackPress={() => navigation.goBack()}
+                    onBackPress={() => router.back()}
                     showChatroom={true}
-                    onChatPress={() => navigation.navigate('ChatroomShow', {userId: user.id})}/>
+                    onChatPress={() => router.navigate({pathname: 'ChatroomShow', params: {userId: user.id}})}/>
             <View style={s.contactgroups}>
                 <TouchableOpacity style={s.btngroup} onPress={toggleMenu}>
                     <TxtJost style={s.txtbtngroup}>Group</TxtJost>
@@ -182,7 +185,7 @@ const UserContactGroupScreen = ({ route, navigation }) => {
             <ScrollView>
                 <View style={s.container}>
                     <View style={s.share}>
-                        <TouchableOpacity onPress={() => navigation.navigate("Share", {userShare: user})}>
+                        <TouchableOpacity onPress={() => router.navigate({pathname: "Share", params: {userShare: JSON.stringify(user)}})}>
                             <Share/>
                         </TouchableOpacity>
                     </View>

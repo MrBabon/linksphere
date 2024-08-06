@@ -1,13 +1,18 @@
 import { View } from "react-native";
 import { TxtInria } from "../../../components/TxtInria/TxtInria";
+import { useLocalSearchParams } from "expo-router";
+import Header from "../../../components/Header/Header";
 
 
-const ChatroomShow = ({ route, navigation }) => {
-    const { userId } = route.params
+const ChatroomShow = () => {
+    const { userId } = useLocalSearchParams();
     return (
-        <View>
+        <>
+            <Header
+                title={"Chats"}
+            />
             <TxtInria>Chatroom Show</TxtInria>
-        </View>
+        </>
     )
 }
 

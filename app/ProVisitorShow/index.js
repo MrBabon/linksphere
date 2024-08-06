@@ -17,15 +17,16 @@ import Twitter from "../../assets/icons/Twitter";
 import Linkedin from "../../assets/icons/Linkedin";
 import Facebook from "../../assets/icons/Facebook";
 import Instagram from "../../assets/icons/Instagram";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-const ProVisitorShowScreen = ({ route, navigation }) => {
-    const { userId } = route.params;
+const ProVisitorShowScreen = () => {
+    const { userId } = useLocalSearchParams();
     const { userInfo, userToken, isLoading } = useContext(AuthContext);
     const [user, setUser] = useState({})
-
+    const router = useRouter();
 
     const backButton = (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => router.back()}>
             <ChevronLeft/>
         </TouchableOpacity>
     )

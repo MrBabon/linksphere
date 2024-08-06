@@ -18,7 +18,7 @@ import { Link, useRouter } from "expo-router";
 
 
 const Profil = () => {
-    const {userInfo, userToken, isLoading} = useContext(AuthContext);
+    const {userInfo, userToken, isLoading, splashLoading} = useContext(AuthContext);
     const [avatar, setAvatar] = useState(null);
     const router = useRouter();
 
@@ -43,15 +43,17 @@ const Profil = () => {
 
 
     useEffect(() => {
-
-        if (!userInfo) {
-            router.replace('/Home');
+        if (!userToken || splashLoading) {
+            console.log("Either userToken, userInfo is missing, or splashLoading is true. Aborting fetch.");
             return;
         }
 
+        
         const fetchData = async () => {
             try {
-                if (userInfo && userToken) {          
+                if (userInfo && userToken) { 
+                    console.log('Fetching user info...');
+                             
                     const response = await api.get(`/users/${userInfo.id}/profil`, {
                         headers: {
                             'Authorization': `${userToken}`
@@ -65,14 +67,16 @@ const Profil = () => {
                 
             }
         };
-
+        
         fetchData();
-    }, [userInfo]);
-
-
+    }, [userInfo, userToken, splashLoading]);
+    
     if (!userInfo) {
-        return null; // ou une autre UI indiquant que l'utilisateur n'est pas connecté
+        router.replace('/Home');
+        return null;
     }
+
+
 
     return (
         <>

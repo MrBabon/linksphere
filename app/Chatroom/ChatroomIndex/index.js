@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { TxtInria } from "../../../components/TxtInria/TxtInria";
 import Header from "../../../components/Header/Header";
 
@@ -6,11 +6,11 @@ const ChatroomIndex = ({ navigation }) => {
     return (
         <>
             <Header
-                title={"Messages"}
+                title={"Chats"}
                 />
-            <View>
+            <ScrollView>
                 <TxtInria>Chatroom Index</TxtInria>
-            </View>
+            </ScrollView>
         </>
     )
 }

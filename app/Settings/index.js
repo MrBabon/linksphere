@@ -1,11 +1,10 @@
 import { s } from "./styles";
 import Spinner from "react-native-loading-spinner-overlay";
 import { AuthContext } from "../context/AuthContext";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Settings from '../../assets/icons/Settings';
 import ChevronLeft from "../../assets/icons/ChevronLeft";
 import ChevronRight from "../../assets/icons/ChevronRight";
-import Close from "../../assets/icons/Close";
 import { ScrollView, Switch, TouchableOpacity, View } from "react-native";
 import { TxtInria, TxtInriaBold } from "../../components/TxtInria/TxtInria";
 import { TxtJost } from "../../components/TxtJost/TxtJost";
@@ -21,6 +20,15 @@ const SettingsScreen = () => {
     const [messagesFromEveryone, setMessagesFromEveryone] = useState(userInfo.messages_from_everyone);
     const router = useRouter();
 
+
+    useEffect(() => {
+        if (userInfo) {
+            setPushNotifications(userInfo.push_notifications);
+            setMessagesFromContacts(userInfo.messages_from_contacts);
+            setMessagesFromEveryone(userInfo.messages_from_everyone);
+        }
+    }, [userInfo]);
+    
     const handleUpdatePreferences = (preference, value) => {
         const updatedPreferences = {
             ...userInfo,
@@ -62,7 +70,10 @@ const SettingsScreen = () => {
         </View>
     )
 
-    
+    if (!userInfo) {
+        router.replace('/Home');
+        return null;
+    }
 
     return (
         <>
