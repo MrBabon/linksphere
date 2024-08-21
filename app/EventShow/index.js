@@ -210,7 +210,7 @@ const EventShow = () => {
                 <View style={s.header_nav}>
                     {!isRegistered ? (
                         <>
-                            <TouchableOpacity style={s.navContainer} onPress={() => router.navigate('Events')}>
+                            <TouchableOpacity style={s.navContainer} onPress={() => router.navigate('EventIndex')}>
                                 <TxtJostBold style={s.nav_txt_active}>All Upcoming Events</TxtJostBold>
                                 <View style={s.underline}></View>
                             </TouchableOpacity>
@@ -220,7 +220,7 @@ const EventShow = () => {
                         </>
                     ) : (
                         <>
-                            <TouchableOpacity  onPress={() => router.navigate('Events')}>
+                            <TouchableOpacity  onPress={() => router.navigate('EventIndex')}>
                                 <TxtJost style={s.nav_txt}>All Upcoming Events</TxtJost>
                             </TouchableOpacity>
                             <TouchableOpacity  style={s.navContainer} onPress={() => router.navigate('MyEvents')}>

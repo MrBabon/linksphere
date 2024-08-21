@@ -41,6 +41,12 @@
         "projectId": "75c57ff1-2fc1-4fa7-850b-10c2b1344639"
       }
     },
-    "owner": "dannacode"
+    "owner": "dannacode",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/75c57ff1-2fc1-4fa7-850b-10c2b1344639"
+    }
   }
 }
