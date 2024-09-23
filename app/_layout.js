@@ -5,7 +5,6 @@ import FlashMessage from "react-native-flash-message";
 import { useContext, useEffect, useState } from "react";
 import Footer from "../components/Footer/Footer";
 import { View } from "react-native-animatable";
-import { set } from "date-fns";
 
 export default function RootLayout() {
 
