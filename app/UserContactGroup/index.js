@@ -141,12 +141,27 @@ const UserContactGroupScreen = () => {
         }
     };
 
+    const handleChatPress = async (userId) => {
+        try {
+            const response = await api.post('/chatrooms', {
+                other_user_id: userId,
+            });
+            console.log("chatroom id Response:", response.data.data.attributes.id);
+
+            const chatroomId = response.data.data.attributes.id;
+            console.log("Chatroom ID:", chatroomId);
+
+            router.push({ pathname: 'ChatroomShow', params: { chatroomId, userId: userId } });
+        } catch (error) {
+            console.error("Failed to create chatroom:", error);
+        }
+    }
+
     const toggleMenu = () => {
         setVisible(!visible);
     };
 
 
-    console.log("User: ", user);
     
     return (
         <>
@@ -155,7 +170,7 @@ const UserContactGroupScreen = () => {
                     showBackButton={true}
                     onBackPress={() => router.back()}
                     showChatroom={true}
-                    onChatPress={() => router.navigate({pathname: 'ChatroomShow', params: {userId: user.id}})}/>
+                    onChatPress={() => handleChatPress(user.id)}/>
             <View style={s.contactgroups}>
                 <TouchableOpacity style={s.btngroup} onPress={toggleMenu}>
                     <TxtJost style={s.txtbtngroup}>Group</TxtJost>
