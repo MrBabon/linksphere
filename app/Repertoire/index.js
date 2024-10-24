@@ -16,7 +16,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 
 const RepertoireScreen = () => {
-    const {userInfo, userToken, isLoading} = useContext(AuthContext);
+    const {userInfo, userToken} = useContext(AuthContext);
     const [contactGroups, setContactGroups] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [users, setUsers] = useState([]);

@@ -44,7 +44,6 @@ const Profil = () => {
 
     useEffect(() => {
         if (!userToken || splashLoading) {
-            console.log("Either userToken, userInfo is missing, or splashLoading is true. Aborting fetch.");
             return;
         }
 
@@ -52,7 +51,6 @@ const Profil = () => {
         const fetchData = async () => {
             try {
                 if (userInfo && userToken) { 
-                    console.log('Fetching user info...');
                              
                     const response = await api.get(`/users/${userInfo.id}/profil`, {
                         headers: {

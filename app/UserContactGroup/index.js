@@ -143,7 +143,7 @@ const UserContactGroupScreen = () => {
 
     const handleChatPress = async (userId) => {
         try {
-            const response = await api.post('/chatrooms', {
+            const response = await api.post(`/users/${userInfo.id}/chatrooms`, {
                 other_user_id: userId,
             });
             console.log("chatroom id Response:", response.data.data.attributes.id);
@@ -151,7 +151,7 @@ const UserContactGroupScreen = () => {
             const chatroomId = response.data.data.attributes.id;
             console.log("Chatroom ID:", chatroomId);
 
-            router.push({ pathname: 'ChatroomShow', params: { chatroomId, userId: userId } });
+            router.push({ pathname: 'Chatroom/ChatroomShow', params: { chatroomId: chatroomId, user: userId } });
         } catch (error) {
             console.error("Failed to create chatroom:", error);
         }

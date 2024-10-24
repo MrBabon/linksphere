@@ -6,78 +6,119 @@ import { useRouter } from "expo-router";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import { s } from "./styles";
+import Avatar from "../../../assets/icons/Avatar";
+import Spinner from "react-native-loading-spinner-overlay";
+import { UserSearch } from "../../../components/forms/UserSearch/UserSearch";
 
 const ChatroomIndex = () => {
-    const { userToken } = useContext(AuthContext);
+    const { userToken, userInfo } = useContext(AuthContext);
     const [chatrooms, setChatrooms] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [lastMessages, setLastMessages] = useState([]);
     const [search, setSearch] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
     const router = useRouter();
+    
 
-    const fetchChatrooms = async () => {
+    const fetchChatrooms = async (searchQuery = "") => {
         try {
-            const response = await api.get("/chatrooms", {
-                headers: { Authorization: userToken }
+            const response = await api.get(`users/${userInfo.id}/chatrooms`, {
+                headers: { Authorization: userToken },
+                params: { search: searchQuery },
             });
-            console.log("Chatrooms response:", response.data);
+            console.log("Chatrooms response:", response.data.chatrooms.data);
             
-            setChatrooms(response.data.chatrooms.data);
-            setFilteredUsers(response.data.users.data);
+            const chatrooms = response.data.chatrooms.data.map(chatroom => {
+                const otherUser = chatroom.attributes.other_user; // Accéder à l'autre utilisateur
+    
+                console.log("Other user in chatroom:", otherUser); // Affiche les détails de l'autre utilisateur
+                
+                const messages = chatroom.relationships.messages.data;
+                const lastMessage = messages.length > 0 ? messages[0].attributes.content : "Pas de message";
+
+                // Tronquer le dernier message à 15 caractères
+                const truncatedMessage = lastMessage.length > 15 ? lastMessage.substring(0, 15) + "..." : lastMessage;
+                if (otherUser) {
+                    console.log("Other user in chatroom:", otherUser);
+                    return {
+                        id: chatroom.id,
+                        otherUserFirstName: otherUser.first_name,
+                        otherUserLastName: otherUser.last_name,
+                        otherUserAvatar: otherUser.avatar_url,
+                        otherUserJob: otherUser.job,
+                        truncatedMessage: truncatedMessage,
+                        lastMessage: chatroom.relationships.messages.data.length > 0
+                            ? chatroom.relationships.messages.data[0].attributes.content
+                            : "Pas de message",
+                        updatedAt: chatroom.attributes.updated_at
+                    };
+                } else {
+                    console.warn("Other user is the current user, skipping.");
+                    return null;
+                }
+            }).filter(chatroom => chatroom !== null);
+            const users = response.data.users.data;
+
+            setChatrooms(chatrooms); // Mettre à jour les chatrooms avec les infos de l'autre utilisateur
+            setFilteredUsers(users); // Mettre à jour les utilisateurs filtrés si nécessaire
         } catch (error) {
             console.error("Failed to fetch chatrooms:", error);
         }
     }
 
     useEffect(() => {
-        fetchChatrooms();  // Appel initial de la fonction pour récupérer les données
+        fetchChatrooms(search);  // Appel initial de la fonction pour récupérer les données
     }, [search]);
 
 
-    const handleNavigateToChatroom = (chatroomId) => {
-        // Navigue vers la page de détails de la chatroom avec Expo Router
-        router.push(`/chatrooms/${chatroomId}`);
+    const handleSearchChange = (searchTerm) => {
+        setSearch(searchTerm);
     };
-
-    const renderChatroom = ({ item }) => {
-        const lastMessage = item.messages[item.messages.length - 1];
-
-        return (
-            <TouchableOpacity onPress={() => handleNavigateToChatroom(item.id)}>
-                <View style={s.chatroomContainer}>
-                    <Image
-                        source={{ uri: item.other_user.avatar_url || "https://example.com/default-avatar.png" }}
-                        style={s.avatar}
-                    />
-                    <View style={s.chatroomDetails}>
-                        <TxtInria style={s.chatroomName}>{item.other_user.full_name}</TxtInria>
-                        <TxtInria style={s.chatroomJob}>{item.other_user.job}</TxtInria>
-                        <TxtInria style={s.chatroomLastMessage}>
-                            {lastMessage && lastMessage.user_id === currentUser.id ? "You: " : `${lastMessage.user.first_name}: `}
-                            {lastMessage ? lastMessage.content : "No messages yet"}
-                        </TxtInria>
-                    </View>
-                    <TxtInria style={s.messageDate}>
-                        {lastMessage && new Date(lastMessage.created_at).toLocaleDateString()}
-                    </TxtInria>
-                </View>
-            </TouchableOpacity>
-        );
-    };
+   
 
     return (
         <>
-            <Header title={"Chats"} />
-                <TextInput
-                    style={s.searchInput}
-                    value={search}
-                    onChangeText={setSearch}
-                    placeholder="Search Contacts"
-                />
-                <FlatList
-                    data={filteredUsers}
-                    renderItem={renderChatroom}
-                    keyExtractor={(item) => item.id.toString()}
-                />
+            <Spinner/>
+            <Header title={"Chats"}>
+                <UserSearch onUserSearch={handleSearchChange}/>
+            </Header>
+            <ScrollView style={s.container}>
+                <View>
+                    {chatrooms.length === 0 ? (
+                        // Si aucune chatroom n'est disponible, afficher un message
+                        <TxtInria style={s.noChatMessage}>Aucune conversation active pour le moment.</TxtInria>
+                    ) : (
+                        chatrooms.map(chatroom => (
+                            <TouchableOpacity key={chatroom.id} onPress={() => router.navigate({ pathname: "Chatroom/ChatroomShow", params: { chatroomId: chatroom.id, user: chatroom.otherUser }})}> 
+                                <View style={s.chatroomContainer}>
+                                    {/* Avatar de l'autre utilisateur */}
+                                    <Avatar style={s.avatar_url} svgStyle={s.avatar_url} uri={chatroom.otherUserAvatar} />
+
+                                    <View style={s.chatroomDetails}>
+                                        <TxtInria style={s.chatroomName}>
+                                            {`${chatroom.otherUserFirstName || "Unknown"} ${chatroom.otherUserLastName || "User"}`}
+                                        </TxtInria>
+                                        <TxtInria style={s.chatroomJob}>{chatroom.otherUserJob || "Job not specified"}</TxtInria>
+                                        <TxtInria style={s.chatroomLastMessage}>
+                                            {/* Ajoute ici le contenu du dernier message si disponible */}
+                                            {chatroom.truncatedMessage}
+                                        </TxtInria>
+                                    </View>
+                                    <TxtInria style={s.messageDate}>
+                                        {/* Ajoute ici la date du dernier message */}
+                                        {chatroom.lastMessages}
+                                    </TxtInria>
+                                </View>
+                                <View style={s.border}></View>
+                            </TouchableOpacity>
+
+                        ))
+                        
+                                
+                            
+                    )}
+                </View>
+            </ScrollView>  
 
         </>
     );
