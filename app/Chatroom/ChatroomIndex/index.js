@@ -1,5 +1,5 @@
-import { FlatList, Image, ScrollView, TextInput, TouchableOpacity, View } from "react-native";
-import { TxtInria } from "../../../components/TxtInria/TxtInria";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import { TxtInria, TxtInriaBold } from "../../../components/TxtInria/TxtInria";
 import api from "../../../config/config";
 import Header from "../../../components/Header/Header";
 import { useRouter } from "expo-router";
@@ -31,7 +31,6 @@ const ChatroomIndex = () => {
             const chatrooms = response.data.chatrooms.data.map(chatroom => {
                 const otherUser = chatroom.attributes.other_user; // Accéder à l'autre utilisateur
     
-                console.log("Other user in chatroom:", otherUser); // Affiche les détails de l'autre utilisateur
                 
                 const messages = chatroom.relationships.messages.data;
                 const lastMessage = messages.length > 0 ? messages[0].attributes.content : "Pas de message";
@@ -39,7 +38,7 @@ const ChatroomIndex = () => {
                 // Tronquer le dernier message à 15 caractères
                 const truncatedMessage = lastMessage.length > 15 ? lastMessage.substring(0, 15) + "..." : lastMessage;
                 if (otherUser) {
-                    console.log("Other user in chatroom:", otherUser);
+                    
                     return {
                         id: chatroom.id,
                         otherUserFirstName: otherUser.first_name,
@@ -86,7 +85,7 @@ const ChatroomIndex = () => {
                 <View>
                     {chatrooms.length === 0 ? (
                         // Si aucune chatroom n'est disponible, afficher un message
-                        <TxtInria style={s.noChatMessage}>Aucune conversation active pour le moment.</TxtInria>
+                        <TxtInria style={s.noChatMessage}>No active conversations at the moment.</TxtInria>
                     ) : (
                         chatrooms.map(chatroom => (
                             <TouchableOpacity key={chatroom.id} onPress={() => router.navigate({ pathname: "Chatroom/ChatroomShow", params: { chatroomId: chatroom.id, user: chatroom.otherUser }})}> 
@@ -95,9 +94,9 @@ const ChatroomIndex = () => {
                                     <Avatar style={s.avatar_url} svgStyle={s.avatar_url} uri={chatroom.otherUserAvatar} />
 
                                     <View style={s.chatroomDetails}>
-                                        <TxtInria style={s.chatroomName}>
+                                        <TxtInriaBold style={s.chatroomName}>
                                             {`${chatroom.otherUserFirstName || "Unknown"} ${chatroom.otherUserLastName || "User"}`}
-                                        </TxtInria>
+                                        </TxtInriaBold>
                                         <TxtInria style={s.chatroomJob}>{chatroom.otherUserJob || "Job not specified"}</TxtInria>
                                         <TxtInria style={s.chatroomLastMessage}>
                                             {/* Ajoute ici le contenu du dernier message si disponible */}
@@ -106,10 +105,9 @@ const ChatroomIndex = () => {
                                     </View>
                                     <TxtInria style={s.messageDate}>
                                         {/* Ajoute ici la date du dernier message */}
-                                        {chatroom.lastMessages}
+                                        {chatroom.lastMessages || "Date unknown"}
                                     </TxtInria>
                                 </View>
-                                <View style={s.border}></View>
                             </TouchableOpacity>
 
                         ))

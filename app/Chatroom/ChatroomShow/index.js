@@ -1,11 +1,12 @@
 import { ScrollView, View } from "react-native";
-import { TxtInria } from "../../../components/TxtInria/TxtInria";
+import { TxtInria, TxtInriaBold } from "../../../components/TxtInria/TxtInria";
 import { useLocalSearchParams } from "expo-router";
 import Header from "../../../components/Header/Header";
 import { useContext, useEffect, useState } from "react";
 import api from "../../../config/config";
 import { AuthContext } from "../../context/AuthContext";
 import Avatar from "../../../assets/icons/Avatar";
+import { s } from "./styles";
 
 
 const ChatroomShow = () => {
@@ -49,10 +50,12 @@ const ChatroomShow = () => {
             <Header
                 title={"Chats"}
             >
-               <View>
-                    <Avatar uri={otherUser.attributes.avatar_url} />
-                    <TxtInria>{otherUser.attributes.first_name} {otherUser.attributes.last_name}</TxtInria>
-                    <TxtInria>{otherUser.attributes.job || "Job not specified"}</TxtInria>
+               <View style={s.chatroomContainer}>
+                    <Avatar style={s.avatar_url} svgStyle={s.avatar_url} uri={otherUser.attributes.avatar_url} />
+                    <View style={s.chatroomDetails}>
+                        <TxtInriaBold style={s.chatroomName}>{otherUser.attributes.first_name} {otherUser.attributes.last_name}</TxtInriaBold>
+                        <TxtInria style={s.chatroomJob}>{otherUser.attributes.job || "Job not specified"}</TxtInria>
+                    </View>
                 </View>  
             </Header>
             <ScrollView>

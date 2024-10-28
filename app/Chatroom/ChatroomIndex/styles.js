@@ -45,19 +45,26 @@ export const s = StyleSheet.create({
 
     // BODY
 
+    container: {
+        flex: 1,
+        backgroundColor: "#f9f9f9",
+    },
+
     chatroomContainer: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%",
-        paddingHorizontal: 15,
-        marginVertical: 20
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        backgroundColor: "#fff",
+        // borderBottomWidth: 1,
+        // borderBottomColor: "#ddd",
     },
 
 
     avatar_url: {
         width: 60,
-        height: 60
+        height: 60,
+        marginRight: 12,
     },
 
     border: {
@@ -65,4 +72,39 @@ export const s = StyleSheet.create({
         backgroundColor: "#cacaca7b"
     },
 
+    chatroomDetails: {
+        flex: 1, // Occupe l'espace disponible
+    },
+
+    chatroomName: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "#333",
+    },
+
+    chatroomJob: {
+        fontSize: 12,
+        color: "#777",
+        marginTop: 4, // Espacement entre le nom et le job
+    },
+
+    chatroomLastMessage: {
+        fontSize: 12,
+        color: "#aaa",
+        marginTop: 2, // Espacement entre le job et le dernier message
+    },
+
+    messageDate: {
+        fontSize: 12,
+        color: "#aaa",
+        marginLeft: 8, // Espace entre la date et le contenu
+        alignSelf: "flex-end", // Aligné en haut pour être au même niveau que le nom
+    },
+
+    noChatMessage: {
+        padding: 16,
+        textAlign: "center",
+        fontSize: 16,
+        color: "#999",
+    },
 });
