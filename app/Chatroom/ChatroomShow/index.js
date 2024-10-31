@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { TxtInria, TxtInriaBold } from "../../../components/TxtInria/TxtInria";
 import { useLocalSearchParams } from "expo-router";
 import Header from "../../../components/Header/Header";
@@ -7,6 +7,8 @@ import api from "../../../config/config";
 import { AuthContext } from "../../context/AuthContext";
 import Avatar from "../../../assets/icons/Avatar";
 import { s } from "./styles";
+import { MessageSend } from "../../../components/forms/MessageSend/MessageSend";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 
 const ChatroomShow = () => {
@@ -14,7 +16,7 @@ const ChatroomShow = () => {
     const { chatroomId } = useLocalSearchParams();
     const [chatroom, setChatroom] = useState(null);
     const [otherUser, setOtherUser] = useState(null);
-    console.log("chatroomId reçu :", chatroomId);
+    const FOOTER_HEIGHT = 190;
 
     useEffect(() => {
         const fetchChatroom = async () => {
@@ -23,8 +25,6 @@ const ChatroomShow = () => {
                     headers: { Authorization: userToken }
                 });
                 const otherUsers = response.data.included.find(user => user.id !== userInfo.id.toString());
-
-                console.log("Other user:", otherUsers);
                 
                 setChatroom(response.data.data.relationships.messages);
                 setOtherUser(otherUsers);
@@ -46,7 +46,7 @@ const ChatroomShow = () => {
         );
     }
     return (
-        <>
+        <GestureHandlerRootView>
             <Header
                 title={"Chats"}
             >
@@ -58,10 +58,19 @@ const ChatroomShow = () => {
                     </View>
                 </View>  
             </Header>
-            <ScrollView>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={FOOTER_HEIGHT}
+            >
+                <ScrollView>
 
-            </ScrollView>
-        </>
+                </ScrollView>
+                <View style={s.inputContainer}>
+                    <MessageSend/>
+                </View>
+            </KeyboardAvoidingView>
+        </GestureHandlerRootView>
     )
 }
 

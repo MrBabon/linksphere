@@ -34,4 +34,15 @@ export const s = StyleSheet.create({
         color: "#777",
         marginTop: 4, // Espacement entre le nom et le job
     },
+
+    inputContainer: {
+        position: 'absolute',
+        bottom: 25,
+        left: 0,
+        right: 0,
+        paddingBottom: 100,
+        backgroundColor: '#fff', // Couleur de fond pour l'input
+        // borderTopWidth: 1,
+        // borderColor: '#ccc', // Bordure pour séparer l'input du contenu
+    },
 });
